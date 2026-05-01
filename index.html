@@ -383,21 +383,6 @@
       <button class="sync-btn" style="margin-top:12px;" onclick="saveClientId()">Save Client ID</button>
     </div>
 
-    <!-- Anthropic API Key setup -->
-    <div id="api-key-setup" style="display:none;">
-      <div class="sync-setup">
-        <div class="sync-setup-title">Add Anthropic API Key — for meal suggestions</div>
-        <div class="sync-step"><span class="sync-step-num">1</span>Go to <strong>console.anthropic.com</strong> and sign in</div>
-        <div class="sync-step"><span class="sync-step-num">2</span>Go to <strong>Account → API Keys</strong></div>
-        <div class="sync-step"><span class="sync-step-num">3</span>Click <strong>Create Key</strong> and copy it</div>
-        <div class="sync-step"><span class="sync-step-num">4</span>Paste your API key below</div>
-      </div>
-      <div class="sync-input-wrap">
-        <input id="api-key-input" class="sync-input" type="password" placeholder="Paste your Anthropic API key here (starts with sk-)">
-      </div>
-      <button class="sync-btn" style="margin-top:12px;" onclick="saveAnthropicApiKey(document.getElementById('api-key-input').value)">Save API Key</button>
-      <button class="sync-btn-secondary" style="margin-top:8px;" onclick="document.getElementById('api-key-setup').style.display='none'; document.getElementById('signin-btn-wrap').style.display='block';">Skip for now</button>
-    </div>
 
     <!-- Sign in button (shown when client ID is set) -->
     <div id="signin-btn-wrap">
@@ -476,9 +461,6 @@
     </button>
     <button class="nav-item" onclick="goTo('eatingout', this)">
       <span class="nav-icon">🍽️</span> Eating Out
-    </button>
-    <button class="nav-item" onclick="goTo('fridge', this)">
-      <span class="nav-icon">🧊</span> What's in My Fridge
     </button>
   </div>
 
@@ -1186,149 +1168,6 @@
 
   <div id="running-plans-list" style="display:grid;grid-template-columns:1fr;gap:14px;">
     <div style="text-align:center;color:var(--text3);padding:40px 20px;font-size:14px;">No running plans yet. Add one to get started!</div>
-  </div>
-</div>
-
-<!-- ===================== MEAL PLAN ===================== -->
-<div id="page-meals" class="page">
-  <div class="page-header">
-    <div class="page-eyebrow">Nutrition</div>
-    <div class="page-title">Meal plan</div>
-    <div class="page-sub">Simple, repetitive, no long cooks · All UPF-free, no added sugar</div>
-  </div>
-
-  <div class="eating-tabs">
-    <div class="etab active" onclick="switchEat('std', this)">📅 Weekly overview</div>
-    <div class="etab" onclick="switchEat('standard', this)">🥗 Standard day</div>
-    <div class="etab" onclick="switchEat('early', this)">🕕 Early finish</div>
-    <div class="etab" onclick="switchEat('omad', this)">🍽️ OMAD</div>
-    <div class="etab" onclick="switchEat('keto', this)">🥑 Keto day</div>
-  </div>
-
-  <div id="eat-std" class="etab-page active">
-    <div class="grid-2" style="margin-bottom:16px;">
-      <div class="card card-sm" style="display:flex;justify-content:space-between;align-items:center;">
-        <div><div style="font-size:13px;font-weight:500;color:var(--text2);">Mon, Wed, Sun</div><div style="font-size:15px;font-weight:600;margin:2px 0;">Standard day</div><div class="card-sub">Three meals · ~1,450 kcal · 137g protein</div></div><span class="badge badge-teal">3 meals</span>
-      </div>
-      <div class="card card-sm" style="display:flex;justify-content:space-between;align-items:center;">
-        <div><div style="font-size:13px;font-weight:500;color:var(--text2);">Thu (WFH) · sometimes Tue</div><div style="font-size:15px;font-weight:600;margin:2px 0;">Early finish</div><div class="card-sub">Done by 6pm · ~1,240 kcal · 116g protein</div></div><span class="badge badge-blue">By 6pm</span>
-      </div>
-      <div class="card card-sm" style="display:flex;justify-content:space-between;align-items:center;">
-        <div><div style="font-size:13px;font-weight:500;color:var(--text2);">Saturday</div><div style="font-size:15px;font-weight:600;margin:2px 0;">OMAD</div><div class="card-sub">One big meal · ~1,200 kcal · 110g protein</div></div><span class="badge badge-amber">1 meal</span>
-      </div>
-      <div class="card card-sm" style="display:flex;justify-content:space-between;align-items:center;">
-        <div><div style="font-size:13px;font-weight:500;color:var(--text2);">Friday or Sunday</div><div style="font-size:15px;font-weight:600;margin:2px 0;">Keto day</div><div class="card-sub">No carbs · ~1,400 kcal · 121g protein</div></div><span class="badge badge-purple">Keto</span>
-      </div>
-    </div>
-    <div class="tip-box-f">
-      <div class="tip-box-title">The logic</div>
-      <div class="tip-item"><span class="tip-dot-f"></span>Training days get more calories to fuel performance and recovery</div>
-      <div class="tip-item"><span class="tip-dot-f"></span>Early-finish and OMAD days create the calorie deficit that drives weight loss</div>
-      <div class="tip-item"><span class="tip-dot-f"></span>Keto on Friday or Sunday pairs well with lower-intensity days — teaches your body to burn fat as fuel</div>
-    </div>
-  </div>
-
-  <div id="eat-standard" class="etab-page">
-    <div class="card">
-      <div class="meal-row">
-        <div class="meal-time-col">7–8am<br>Breakfast</div>
-        <div><div class="meal-name-main">Greek yogurt bowl</div><div class="meal-desc-col">200g Fage Total Greek yogurt, handful of frozen berries (thawed), 1 tbsp peanut butter. Stir and go.</div><div class="meal-macros"><span class="badge badge-coral" style="font-size:11px;">320 kcal</span><span class="badge badge-teal" style="font-size:11px;">22g protein</span><span class="badge" style="background:var(--bg2);color:var(--text2);font-size:11px;">2 min</span></div></div>
-        <div class="meal-icon-col">🍓</div>
-      </div>
-      <div class="meal-row">
-        <div class="meal-time-col">12–1pm<br>Lunch</div>
-        <div><div class="meal-name-main">Tuna rice bowl</div><div class="meal-desc-col">1 Tilda steamed basmati pouch, 1 tin tuna in olive oil (drained), half a cucumber sliced, squeeze of lemon, black pepper. Microwave rice, mix, done.</div><div class="meal-macros"><span class="badge badge-coral" style="font-size:11px;">420 kcal</span><span class="badge badge-teal" style="font-size:11px;">42g protein</span><span class="badge" style="background:var(--bg2);color:var(--text2);font-size:11px;">5 min</span></div></div>
-        <div class="meal-icon-col">🍚</div>
-      </div>
-      <div class="meal-row">
-        <div class="meal-time-col">3–4pm<br>Snack</div>
-        <div><div class="meal-name-main">Boiled eggs + cottage cheese</div><div class="meal-desc-col">2 boiled eggs (batch-boil on Sunday), 100g cottage cheese. Zero cooking. Replaces protein powder entirely.</div><div class="meal-macros"><span class="badge badge-coral" style="font-size:11px;">220 kcal</span><span class="badge badge-teal" style="font-size:11px;">25g protein</span><span class="badge" style="background:var(--bg2);color:var(--text2);font-size:11px;">0 min</span></div></div>
-        <div class="meal-icon-col">🥚</div>
-      </div>
-      <div class="meal-row" style="border-bottom:none;">
-        <div class="meal-time-col">6:30–7:30pm<br>Dinner</div>
-        <div><div class="meal-name-main">Chicken breast + microwave veg</div><div class="meal-desc-col">1 plain chicken breast, pan-fried in olive oil + garlic + lemon 8 min each side. 1 bag microwave steam veg. Season with herbs and black pepper.</div><div class="meal-macros"><span class="badge badge-coral" style="font-size:11px;">490 kcal</span><span class="badge badge-teal" style="font-size:11px;">48g protein</span><span class="badge" style="background:var(--bg2);color:var(--text2);font-size:11px;">15 min</span></div></div>
-        <div class="meal-icon-col">🍗</div>
-      </div>
-    </div>
-    <div style="background:var(--bg2);border-radius:var(--radius-sm);padding:14px 16px;margin-top:12px;display:flex;gap:20px;justify-content:center;">
-      <div style="text-align:center;"><div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;">1,450</div><div style="font-size:11px;color:var(--text3);margin-top:2px;">Total kcal</div></div>
-      <div style="text-align:center;"><div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;">137g</div><div style="font-size:11px;color:var(--text3);margin-top:2px;">Protein</div></div>
-      <div style="text-align:center;"><div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;">~22 min</div><div style="font-size:11px;color:var(--text3);margin-top:2px;">Cook time</div></div>
-    </div>
-  </div>
-
-  <div id="eat-early" class="etab-page">
-    <div class="card">
-      <div class="meal-row">
-        <div class="meal-time-col">7am<br>Breakfast</div>
-        <div><div class="meal-name-main">Overnight oats</div><div class="meal-desc-col">40g plain rolled oats, 150ml whole milk, 1 tbsp chia seeds. Mix the night before, grab from the fridge. Zero morning effort.</div><div class="meal-macros"><span class="badge badge-coral" style="font-size:11px;">320 kcal</span><span class="badge badge-teal" style="font-size:11px;">14g protein</span><span class="badge" style="background:var(--bg2);color:var(--text2);font-size:11px;">2 min (night before)</span></div></div>
-        <div class="meal-icon-col">🥣</div>
-      </div>
-      <div class="meal-row">
-        <div class="meal-time-col">12:30pm<br>Lunch</div>
-        <div><div class="meal-name-main">Salmon + rice pouch</div><div class="meal-desc-col">1 plain salmon fillet (pan-fried 4 min each side in butter), 1 Tilda rice pouch, large handful of spinach with olive oil and lemon. Simple and filling.</div><div class="meal-macros"><span class="badge badge-coral" style="font-size:11px;">510 kcal</span><span class="badge badge-teal" style="font-size:11px;">40g protein</span><span class="badge" style="background:var(--bg2);color:var(--text2);font-size:11px;">8 min</span></div></div>
-        <div class="meal-icon-col">🐟</div>
-      </div>
-      <div class="meal-row" style="border-bottom:none;">
-        <div class="meal-time-col">5–5:30pm<br>Dinner</div>
-        <div><div class="meal-name-main">Turkey mince stir-fry</div><div class="meal-desc-col">150g plain turkey mince, 1 bag frozen stir-fry veg. Cook mince 8 min, add frozen veg 4 min. Season with coconut aminos + sesame oil. No rice — keeps it lighter.</div><div class="meal-macros"><span class="badge badge-coral" style="font-size:11px;">410 kcal</span><span class="badge badge-teal" style="font-size:11px;">42g protein</span><span class="badge" style="background:var(--bg2);color:var(--text2);font-size:11px;">12 min</span></div></div>
-        <div class="meal-icon-col">🥢</div>
-      </div>
-    </div>
-    <div style="background:var(--blue-light);border-radius:var(--radius-sm);padding:12px 16px;margin-top:12px;font-size:13px;color:var(--blue);"><strong>After 6pm:</strong> Herbal tea or sparkling water only. Peppermint or chamomile. Sparkling water genuinely curbs evening hunger.</div>
-    <div style="background:var(--bg2);border-radius:var(--radius-sm);padding:14px 16px;margin-top:10px;display:flex;gap:20px;justify-content:center;">
-      <div style="text-align:center;"><div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;">1,240</div><div style="font-size:11px;color:var(--text3);margin-top:2px;">Total kcal</div></div>
-      <div style="text-align:center;"><div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;">96g</div><div style="font-size:11px;color:var(--text3);margin-top:2px;">Protein</div></div>
-      <div style="text-align:center;"><div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;">Done by 6pm ✓</div><div style="font-size:11px;color:var(--text3);margin-top:2px;">Eating window</div></div>
-    </div>
-  </div>
-
-  <div id="eat-omad" class="etab-page">
-    <div class="card" style="margin-bottom:14px;">
-      <div style="font-size:14px;font-weight:500;margin-bottom:12px;">One meal · Around 1–2pm after volunteering</div>
-      <div class="grid-2" style="gap:8px;">
-        <div style="background:var(--bg2);border-radius:var(--radius-sm);padding:12px;"><div style="font-size:13px;font-weight:500;">200g plain chicken breast</div><div style="font-size:11px;color:var(--text3);margin-top:2px;">Pan-fried · 45g protein · ~300 kcal</div></div>
-        <div style="background:var(--bg2);border-radius:var(--radius-sm);padding:12px;"><div style="font-size:13px;font-weight:500;">2 Tilda rice pouches</div><div style="font-size:11px;color:var(--text3);margin-top:2px;">Carbs + energy · ~360 kcal</div></div>
-        <div style="background:var(--bg2);border-radius:var(--radius-sm);padding:12px;"><div style="font-size:13px;font-weight:500;">Large mixed salad</div><div style="font-size:11px;color:var(--text3);margin-top:2px;">Spinach, cucumber, tomato · ~50 kcal</div></div>
-        <div style="background:var(--bg2);border-radius:var(--radius-sm);padding:12px;"><div style="font-size:13px;font-weight:500;">1 whole avocado + olive oil</div><div style="font-size:11px;color:var(--text3);margin-top:2px;">Healthy fats · Keeps you full · ~250 kcal</div></div>
-        <div style="background:var(--bg2);border-radius:var(--radius-sm);padding:12px;"><div style="font-size:13px;font-weight:500;">200g Greek yogurt</div><div style="font-size:11px;color:var(--text3);margin-top:2px;">Dessert · 20g protein · ~160 kcal</div></div>
-        <div style="background:var(--bg2);border-radius:var(--radius-sm);padding:12px;"><div style="font-size:13px;font-weight:500;">Boiled eggs (optional top-up)</div><div style="font-size:11px;color:var(--text3);margin-top:2px;">If protein feels short · 2 eggs = 12g protein</div></div>
-      </div>
-    </div>
-    <div class="tip-box-f">
-      <div class="tip-box-title">OMAD tips</div>
-      <div class="tip-item"><span class="tip-dot-f" style="background:var(--amber);"></span>Black coffee or tea in the morning is fine — won't break your fast</div>
-      <div class="tip-item"><span class="tip-dot-f" style="background:var(--amber);"></span>Drink plenty of water beforehand to take the edge off hunger</div>
-      <div class="tip-item"><span class="tip-dot-f" style="background:var(--amber);"></span>Only use OMAD on rest days — training days need steady fuel</div>
-      <div class="tip-item"><span class="tip-dot-f" style="background:var(--amber);"></span>Eat slowly — one big meal can feel overwhelming if you rush it</div>
-    </div>
-  </div>
-
-  <div id="eat-keto" class="etab-page">
-    <div class="card">
-      <div class="meal-row">
-        <div class="meal-time-col">8am<br>Breakfast</div>
-        <div><div class="meal-name-main">Scrambled eggs + smoked salmon + avocado</div><div class="meal-desc-col">3 eggs scrambled in butter, 2 slices smoked salmon, half an avocado. No toast. Pan takes 5 minutes.</div><div class="meal-macros"><span class="badge badge-coral" style="font-size:11px;">480 kcal</span><span class="badge badge-teal" style="font-size:11px;">35g protein</span><span class="badge badge-purple" style="font-size:11px;">Keto</span><span class="badge" style="background:var(--bg2);color:var(--text2);font-size:11px;">5 min</span></div></div>
-        <div class="meal-icon-col">🥑</div>
-      </div>
-      <div class="meal-row">
-        <div class="meal-time-col">1pm<br>Lunch</div>
-        <div><div class="meal-name-main">Chicken thigh + feta salad</div><div class="meal-desc-col">2 plain chicken thighs (air fryer 12 min or oven 20 min), big bowl of spinach, 40g feta crumbled, olive oil + lemon dressing. No carbs, very filling.</div><div class="meal-macros"><span class="badge badge-coral" style="font-size:11px;">450 kcal</span><span class="badge badge-teal" style="font-size:11px;">40g protein</span><span class="badge badge-purple" style="font-size:11px;">Keto</span><span class="badge" style="background:var(--bg2);color:var(--text2);font-size:11px;">12–20 min</span></div></div>
-        <div class="meal-icon-col">🥗</div>
-      </div>
-      <div class="meal-row">
-        <div class="meal-time-col">4pm<br>Snack (opt)</div>
-        <div><div class="meal-name-main">Cheese + plain nuts</div><div class="meal-desc-col">30g cheddar, small handful of almonds or walnuts. Zero effort. Keeps fat and protein up.</div><div class="meal-macros"><span class="badge badge-coral" style="font-size:11px;">200 kcal</span><span class="badge badge-teal" style="font-size:11px;">8g protein</span><span class="badge badge-purple" style="font-size:11px;">Keto</span><span class="badge" style="background:var(--bg2);color:var(--text2);font-size:11px;">0 min</span></div></div>
-        <div class="meal-icon-col">🧀</div>
-      </div>
-      <div class="meal-row" style="border-bottom:none;">
-        <div class="meal-time-col">6:30pm<br>Dinner</div>
-        <div><div class="meal-name-main">Salmon + courgette in crème fraîche</div><div class="meal-desc-col">1 salmon fillet pan-fried 4 min each side in butter, 1 courgette sliced and sautéed with garlic, full-fat crème fraîche dolloped on top. Rich, filling, no carbs.</div><div class="meal-macros"><span class="badge badge-coral" style="font-size:11px;">430 kcal</span><span class="badge badge-teal" style="font-size:11px;">38g protein</span><span class="badge badge-purple" style="font-size:11px;">Keto</span><span class="badge" style="background:var(--bg2);color:var(--text2);font-size:11px;">10 min</span></div></div>
-        <div class="meal-icon-col">🐟</div>
-      </div>
-    </div>
-    <div style="background:var(--purple-light);border-radius:var(--radius-sm);padding:12px 16px;margin-top:12px;font-size:13px;color:var(--purple);"><strong>Keto rules:</strong> Eat freely from — eggs, meat, fish, cheese, cream, avocado, nuts, all non-starchy veg. Avoid — bread, rice, pasta, oats, fruit (except berries), anything with sugar.</div>
   </div>
 </div>
 
@@ -2251,39 +2090,6 @@ function showCuisine(id, el) {
   </div>
 </div>
 
-<!-- ===================== FRIDGE ===================== -->
-<div id="page-fridge" class="page">
-  <div class="page-header">
-    <div class="page-eyebrow">Nutrition</div>
-    <div class="page-title">What's in my fridge?</div>
-    <div class="page-sub">Add what you've got and get clean meal ideas from those ingredients</div>
-  </div>
-  <div class="card" style="margin-bottom:20px;">
-    <div class="card-title" style="margin-bottom:12px;">Your ingredients</div>
-    <div style="display:flex;gap:10px;margin-bottom:12px;">
-      <input id="fridge-input" type="text" placeholder="e.g. chicken, spinach, eggs..."
-        style="flex:1;padding:12px 16px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;"
-        onkeydown="if(event.key==='Enter')addFridgeItem()">
-      <button onclick="addFridgeItem()" style="padding:12px 20px;background:var(--teal);color:#fff;border:none;border-radius:var(--radius-sm);font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;">+ Add</button>
-    </div>
-    <div id="fridge-tags" style="display:flex;flex-wrap:wrap;gap:8px;min-height:36px;"></div>
-    <div style="display:flex;gap:10px;margin-top:16px;">
-      <button onclick="getFridgeSuggestions()" style="flex:1;padding:13px;background:var(--text);color:#fff;border:none;border-radius:var(--radius-sm);font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">🍳 Get meal ideas</button>
-      <button onclick="clearFridge()" style="padding:13px 16px;background:var(--bg2);color:var(--text3);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;">Clear all</button>
-    </div>
-  </div>
-  <div class="card" style="margin-bottom:20px;">
-    <div class="card-title" style="margin-bottom:12px;">Preferences</div>
-    <div style="display:flex;flex-wrap:wrap;gap:12px;">
-      <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" id="pref-high-protein" checked style="accent-color:var(--teal);width:16px;height:16px;"> High protein</label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" id="pref-low-carb" style="accent-color:var(--teal);width:16px;height:16px;"> Low carb</label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" id="pref-quick" style="accent-color:var(--teal);width:16px;height:16px;"> Quick (under 20 min)</label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" id="pref-no-dairy" style="accent-color:var(--teal);width:16px;height:16px;"> Dairy-free</label>
-    </div>
-  </div>
-  <div id="fridge-results"></div>
-</div>
-
 <!-- ===================== PROGRESS TRACKER ===================== -->
 <div id="page-progress" class="page">
   <div class="page-header">
@@ -2647,7 +2453,6 @@ function goTo(page, el) {
   if (el) el.classList.add('active');
   if (page === 'progress') renderProgress();
   if (page === 'shop') refreshPlannerShoppingList();
-  if (page === 'fridge') renderFridgeTags();
   if (page === 'settings') updateApiKeyStatus();
   if (window.innerWidth <= 900) closeSidebar();
 }
@@ -2664,7 +2469,6 @@ function switchEat(id, el) {
 // ============================================================
 
 const CLIENT_ID_STORAGE = 'laura_goog_client_id';
-const ANTHROPIC_API_KEY_STORAGE = 'laura_anthropic_api_key';
 const DRIVE_FILE_NAME   = 'laura_app_data.json';
 const DRIVE_SCOPE       = 'https://www.googleapis.com/auth/drive.appdata https://www.googleapis.com/auth/drive.file';
 
@@ -2691,58 +2495,6 @@ function showClientIdSetup() {
   document.getElementById('client-id-input').value = getClientId();
   document.getElementById('client-id-setup').style.display = 'block';
   document.getElementById('signin-btn-wrap').style.display = 'none';
-}
-
-// ---- Anthropic API Key management ----
-function getAnthropicApiKey() { return localStorage.getItem(ANTHROPIC_API_KEY_STORAGE) || ''; }
-function saveAnthropicApiKey(key) {
-  if (!key || !key.trim()) {
-    alert('Please enter a valid API key');
-    return;
-  }
-  localStorage.setItem(ANTHROPIC_API_KEY_STORAGE, key.trim());
-  alert('API key saved! The meal suggestion feature is now active.');
-}
-function hasAnthropicApiKey() { return !!getAnthropicApiKey(); }
-
-// ---- Settings page ----
-function saveApiKeySettings() {
-  const keyInput = document.getElementById('settings-api-key');
-  const key = keyInput.value;
-  if (!key || !key.trim()) {
-    alert('Please enter a valid API key');
-    return;
-  }
-  localStorage.setItem(ANTHROPIC_API_KEY_STORAGE, key.trim());
-  updateApiKeyStatus();
-  alert('✓ API key saved! The meal suggestion feature is now active.');
-}
-
-function toggleApiKeyVisibility(btn) {
-  const keyInput = document.getElementById('settings-api-key');
-  if (keyInput.type === 'password') {
-    keyInput.type = 'text';
-    btn.textContent = 'Hide';
-  } else {
-    keyInput.type = 'password';
-    btn.textContent = 'Show';
-  }
-}
-
-function updateApiKeyStatus() {
-  const statusEl = document.getElementById('api-key-status-text');
-  const keyInput = document.getElementById('settings-api-key');
-  const hasKey = hasAnthropicApiKey();
-
-  if (hasKey) {
-    const key = getAnthropicApiKey();
-    const displayKey = key.substring(0, 10) + '•'.repeat(Math.max(0, key.length - 10));
-    statusEl.innerHTML = `<span style="color:var(--teal);font-weight:500;">✓ API key is configured</span><br><span style="font-size:12px;color:var(--text3);margin-top:4px;display:block;">Key: ${displayKey}</span>`;
-    keyInput.value = key;
-  } else {
-    statusEl.textContent = 'No API key configured yet';
-    keyInput.value = '';
-  }
 }
 
 // ---- Sign in / out ----
@@ -3570,7 +3322,6 @@ const SUPP_DAYS = [
 ];
 
 const DAILY_ROUTINE_KEY = 'laura_daily_routine_v1';
-const FRIDGE_KEY = 'laura_fridge_ingredients_v1';
 
 // ============================================================
 // WORKOUT CUSTOMIZATION SYSTEM
@@ -4756,210 +4507,6 @@ function renderSuppCheckin() {
   reset.textContent = "Reset today's check-in";
   reset.onclick = function() { saveCheckin({}); renderSuppCheckin(); };
   grid.appendChild(reset);
-}
-
-function loadFridgeItems() { return getData(FRIDGE_KEY, []); }
-function saveFridgeItems(items) { setData(FRIDGE_KEY, items); }
-
-function renderFridgeTags() {
-  var tags = document.getElementById('fridge-tags');
-  if (!tags) return;
-  var items = loadFridgeItems();
-  if (!items.length) {
-    tags.innerHTML = '<span style="color:var(--text3);font-size:13px;font-style:italic;">No ingredients added yet</span>';
-    return;
-  }
-  tags.innerHTML = items.map(function(item, i) {
-    return '<span style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;background:var(--teal-light);border:1px solid var(--teal);border-radius:999px;font-size:13px;font-weight:500;color:var(--teal);">' + item + '<button onclick="removeFridgeItem(' + i + ')" style="background:none;border:none;color:var(--teal);cursor:pointer;font-size:16px;line-height:1;padding:0;margin:0;">×</button></span>';
-  }).join('');
-}
-
-function addFridgeItem() {
-  var input = document.getElementById('fridge-input');
-  if (!input || !input.value.trim()) return;
-  var newItems = input.value.split(',').map(function(s){ return s.trim(); }).filter(Boolean);
-  var items = loadFridgeItems();
-  newItems.forEach(function(ni){ if (!items.includes(ni)) items.push(ni); });
-  saveFridgeItems(items);
-  input.value = '';
-  renderFridgeTags();
-  document.getElementById('fridge-results').innerHTML = '';
-}
-
-function removeFridgeItem(idx) {
-  var items = loadFridgeItems();
-  items.splice(idx, 1);
-  saveFridgeItems(items);
-  renderFridgeTags();
-  document.getElementById('fridge-results').innerHTML = '';
-}
-
-function clearFridge() {
-  saveFridgeItems([]);
-  renderFridgeTags();
-  document.getElementById('fridge-results').innerHTML = '';
-}
-
-async function getFridgeSuggestions() {
-  var items = loadFridgeItems();
-  var resultsEl = document.getElementById('fridge-results');
-  if (!items.length) {
-    resultsEl.innerHTML = '';
-    var msg = document.createElement('div');
-    msg.className = 'card';
-    msg.style.cssText = 'color:var(--text3);font-style:italic;';
-    msg.textContent = 'Add some ingredients first!';
-    resultsEl.appendChild(msg);
-    return;
-  }
-  var prefs = [];
-  if (document.getElementById('pref-high-protein') && document.getElementById('pref-high-protein').checked) prefs.push('high protein');
-  if (document.getElementById('pref-low-carb') && document.getElementById('pref-low-carb').checked) prefs.push('low carb');
-  if (document.getElementById('pref-quick') && document.getElementById('pref-quick').checked) prefs.push('quick to make under 20 minutes');
-  if (document.getElementById('pref-no-dairy') && document.getElementById('pref-no-dairy').checked) prefs.push('dairy-free');
-  var prefsStr = prefs.length ? 'Preferences: ' + prefs.join(', ') + '.' : '';
-
-  resultsEl.innerHTML = '';
-  var loading = document.createElement('div');
-  loading.className = 'card';
-  loading.style.cssText = 'text-align:center;padding:40px;';
-  loading.innerHTML = '<div style="font-size:32px;margin-bottom:12px;">🍳</div><div style="font-size:15px;font-weight:600;margin-bottom:6px;">Finding meal ideas...</div><div style="font-size:13px;color:var(--text3);">Using your ' + items.length + ' ingredient' + (items.length !== 1 ? 's' : '') + '</div>';
-  resultsEl.appendChild(loading);
-
-  try {
-    var apiKey = getAnthropicApiKey();
-    if (!apiKey) {
-      resultsEl.innerHTML = '';
-      var msg = document.createElement('div');
-      msg.className = 'card';
-      msg.style.cssText = 'color:var(--red);background:var(--red-light);padding:20px;border-radius:var(--radius);';
-      msg.innerHTML = '<strong>API Key needed:</strong> To use meal suggestions, you need to add your Anthropic API key in Settings.';
-      resultsEl.appendChild(msg);
-      return;
-    }
-    var response = await fetch('https://meal-api-3sa5.onrender.com/api/meals', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        apiKey: apiKey,
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        system: 'You are a clean-eating nutrition assistant for Laura, who follows a high-protein, low-UPF diet. She trains 5 days a week. Always suggest whole food, minimally processed meals. Respond ONLY with valid JSON, no markdown, no extra text.',
-        messages: [{ role: 'user', content: 'Ingredients: ' + items.join(', ') + '. ' + prefsStr + ' Give 3 meal ideas using ONLY these plus basic staples (olive oil, salt, pepper, garlic, herbs). JSON format: {"meals":[{"name":"string","emoji":"emoji","time":"X mins","calories":"kcal","protein":"Xg","description":"1-2 sentences","steps":["step1","step2","step3"],"tip":"tip"}]}' }]
-      })
-    });
-    if (!response.ok) {
-      var errText = await response.text();
-      throw new Error('API error: ' + response.status + ' - ' + (errText || 'Check API key'));
-    }
-    var data = await response.json();
-    var textBlock = (data.content || []).find(function(c) { return c.type === 'text'; });
-    if (!textBlock) throw new Error('No response from AI');
-    var clean = textBlock.text.replace(/```json|```/g, '').trim();
-    var parsed = JSON.parse(clean);
-    if (!parsed.meals || !parsed.meals.length) throw new Error('No meals returned');
-
-    resultsEl.innerHTML = '';
-
-    var header = document.createElement('div');
-    header.style.cssText = 'margin-bottom:16px;';
-    var headerTitle = document.createElement('div');
-    headerTitle.style.cssText = "font-family:'Playfair Display',serif;font-size:22px;font-weight:700;margin-bottom:4px;";
-    headerTitle.textContent = 'Your meal ideas';
-    var headerSub = document.createElement('div');
-    headerSub.style.cssText = 'font-size:13px;color:var(--text3);';
-    headerSub.textContent = 'Based on: ' + items.join(', ');
-    header.appendChild(headerTitle);
-    header.appendChild(headerSub);
-    resultsEl.appendChild(header);
-
-    parsed.meals.forEach(function(meal) {
-      var card = document.createElement('div');
-      card.className = 'card';
-      card.style.cssText = 'margin-bottom:16px;';
-
-      var topRow = document.createElement('div');
-      topRow.style.cssText = 'display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;';
-
-      var mealInfo = document.createElement('div');
-      var mealEmoji = document.createElement('div');
-      mealEmoji.style.cssText = 'font-size:28px;margin-bottom:6px;';
-      mealEmoji.textContent = meal.emoji;
-      var mealName = document.createElement('div');
-      mealName.style.cssText = "font-family:'Playfair Display',serif;font-size:20px;font-weight:700;";
-      mealName.textContent = meal.name;
-      var mealDesc = document.createElement('div');
-      mealDesc.style.cssText = 'font-size:13px;color:var(--text3);margin-top:4px;';
-      mealDesc.textContent = meal.description;
-      mealInfo.appendChild(mealEmoji);
-      mealInfo.appendChild(mealName);
-      mealInfo.appendChild(mealDesc);
-
-      var mealMeta = document.createElement('div');
-      mealMeta.style.cssText = 'text-align:right;flex-shrink:0;margin-left:12px;';
-      var metaTime = document.createElement('div');
-      metaTime.style.cssText = 'font-size:11px;color:var(--text3);';
-      metaTime.textContent = '⏱ ' + meal.time;
-      var metaProtein = document.createElement('div');
-      metaProtein.style.cssText = 'font-size:13px;font-weight:600;color:var(--teal);margin-top:4px;';
-      metaProtein.textContent = meal.protein + ' protein';
-      var metaCal = document.createElement('div');
-      metaCal.style.cssText = 'font-size:12px;color:var(--text3);';
-      metaCal.textContent = meal.calories;
-      mealMeta.appendChild(metaTime);
-      mealMeta.appendChild(metaProtein);
-      mealMeta.appendChild(metaCal);
-
-      topRow.appendChild(mealInfo);
-      topRow.appendChild(mealMeta);
-      card.appendChild(topRow);
-
-      var stepsBox = document.createElement('div');
-      stepsBox.style.cssText = 'background:var(--bg2);border-radius:var(--radius-sm);padding:14px;margin-bottom:10px;';
-      var stepsTitle = document.createElement('div');
-      stepsTitle.style.cssText = 'font-size:12px;font-weight:600;color:var(--text2);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;';
-      stepsTitle.textContent = 'How to make it';
-      stepsBox.appendChild(stepsTitle);
-      meal.steps.forEach(function(step, i) {
-        var stepRow = document.createElement('div');
-        stepRow.style.cssText = 'display:flex;gap:10px;margin-bottom:6px;font-size:13px;';
-        var stepNum = document.createElement('div');
-        stepNum.style.cssText = 'width:20px;height:20px;border-radius:50%;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;';
-        stepNum.textContent = i + 1;
-        var stepText = document.createElement('div');
-        stepText.style.cssText = 'color:var(--text2);padding-top:2px;';
-        stepText.textContent = step;
-        stepRow.appendChild(stepNum);
-        stepRow.appendChild(stepText);
-        stepsBox.appendChild(stepRow);
-      });
-      card.appendChild(stepsBox);
-
-      var tip = document.createElement('div');
-      tip.style.cssText = 'display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:var(--text3);font-style:italic;';
-      tip.innerHTML = '<span>💡</span>';
-      var tipText = document.createElement('span');
-      tipText.textContent = meal.tip;
-      tip.appendChild(tipText);
-      card.appendChild(tip);
-
-      resultsEl.appendChild(card);
-    });
-
-  } catch(err) {
-    resultsEl.innerHTML = '';
-    var errCard = document.createElement('div');
-    errCard.className = 'card';
-    var errTitle = document.createElement('div');
-    errTitle.style.cssText = 'font-weight:600;margin-bottom:4px;color:var(--coral);';
-    errTitle.textContent = "Couldn't get suggestions";
-    var errMsg = document.createElement('div');
-    errMsg.style.cssText = 'font-size:13px;color:var(--text3);';
-    errMsg.textContent = err.message;
-    errCard.appendChild(errTitle);
-    errCard.appendChild(errMsg);
-    resultsEl.appendChild(errCard);
-  }
 }
 </script>
 
