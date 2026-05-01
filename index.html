@@ -3826,7 +3826,7 @@ function saveClassTimes(classTimes) {
 }
 
 // Add a class time
-function addClassTime(workoutType, day, time, location = '') {
+function addClassTime(workoutType, day, time, location = '', notes = '') {
   const classTimes = loadClassTimes();
   if (!classTimes[workoutType]) {
     classTimes[workoutType] = [];
@@ -3836,6 +3836,7 @@ function addClassTime(workoutType, day, time, location = '') {
     day,
     time,
     location,
+    notes,
     createdAt: new Date().toISOString()
   });
   saveClassTimes(classTimes);
@@ -3892,7 +3893,7 @@ function renderClassTimes(workoutType) {
 
       const timeText = document.createElement('div');
       timeText.style.cssText = 'flex:1;';
-      timeText.innerHTML = `<div style="font-weight:600;font-size:13px;">${t.day.charAt(0).toUpperCase() + t.day.slice(1)} · ${t.time}</div>${t.location ? `<div style="font-size:11px;color:var(--text2);margin-top:2px;">${t.location}</div>` : ''}`;
+      timeText.innerHTML = `<div style="font-weight:600;font-size:13px;">${t.day.charAt(0).toUpperCase() + t.day.slice(1)} · ${t.time}</div>${t.location ? `<div style="font-size:11px;color:var(--text2);margin-top:2px;">${t.location}</div>` : ''}${t.notes ? `<div style="font-size:11px;color:var(--text3);margin-top:3px;font-style:italic;">${t.notes}</div>` : ''}`;
 
       const deleteBtn = document.createElement('button');
       deleteBtn.style.cssText = 'padding:6px 10px;background:none;border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text3);font-size:12px;cursor:pointer;transition:all 0.15s;';
@@ -3964,9 +3965,22 @@ function openClassTimeModal(workoutType) {
         <input id="ct-time" type="text" placeholder="e.g. 7:20am" style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);box-sizing:border-box;">
       </div>
 
-      <div style="margin-bottom:20px;">
+      <div style="margin-bottom:16px;">
         <label style="display:block;font-size:12px;font-weight:600;color:var(--text2);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.08em;">Location (optional)</label>
-        <input id="ct-location" type="text" placeholder="e.g. Purley David Lloyd" style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);box-sizing:border-box;">
+        <select id="ct-location" style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);">
+          <option value="">— Select a location —</option>
+          <option value="David Lloyd Beckenham">David Lloyd Beckenham</option>
+          <option value="David Lloyd Purley">David Lloyd Purley</option>
+          <option value="David Lloyd Colliers Wood">David Lloyd Colliers Wood</option>
+          <option value="David Lloyd Cheam">David Lloyd Cheam</option>
+          <option value="David Lloyd Epsom">David Lloyd Epsom</option>
+          <option value="David Lloyd Kidbrooke">David Lloyd Kidbrooke</option>
+        </select>
+      </div>
+
+      <div style="margin-bottom:20px;">
+        <label style="display:block;font-size:12px;font-weight:600;color:var(--text2);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.08em;">Notes (optional)</label>
+        <textarea id="ct-notes" placeholder="Any notes about this class..." rows="2" style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);box-sizing:border-box;resize:vertical;"></textarea>
       </div>
 
       <div style="display:flex;gap:8px;">
@@ -3982,14 +3996,18 @@ function saveClassTimeFromModal(workoutType) {
   const day = document.getElementById('ct-day')?.value || 'mon';
   const time = document.getElementById('ct-time')?.value || '';
   const location = document.getElementById('ct-location')?.value || '';
+  const notes = document.getElementById('ct-notes')?.value || '';
 
   if (!time.trim()) {
     showNotification('Please enter a time');
     return;
   }
 
-  addClassTime(workoutType, day, time, location);
-  document.getElementById('class-time-modal').remove();
+  // Close modal first so any render errors don't leave it open
+  const modal = document.getElementById('class-time-modal');
+  if (modal) modal.remove();
+
+  addClassTime(workoutType, day, time, location, notes);
 }
 
 // Initialize default class times on first load
