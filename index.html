@@ -4837,11 +4837,11 @@ async function getFridgeSuggestions() {
       resultsEl.appendChild(msg);
       return;
     }
-    var response = await fetch('https://api.anthropic.com/v1/messages', {
+    var response = await fetch('https://meal-api-3sa5.onrender.com/api/meals', {
       method: 'POST',
-      mode: 'cors',
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey, 'anthropic-version': '2023-06-01' },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        apiKey: apiKey,
         model: 'claude-sonnet-4-20250514',
         max_tokens: 1000,
         system: 'You are a clean-eating nutrition assistant for Laura, who follows a high-protein, low-UPF diet. She trains 5 days a week. Always suggest whole food, minimally processed meals. Respond ONLY with valid JSON, no markdown, no extra text.',
