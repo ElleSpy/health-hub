@@ -4839,6 +4839,7 @@ async function getFridgeSuggestions() {
     }
     var response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
+      mode: 'cors',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey, 'anthropic-version': '2023-06-01' },
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
@@ -4847,6 +4848,10 @@ async function getFridgeSuggestions() {
         messages: [{ role: 'user', content: 'Ingredients: ' + items.join(', ') + '. ' + prefsStr + ' Give 3 meal ideas using ONLY these plus basic staples (olive oil, salt, pepper, garlic, herbs). JSON format: {"meals":[{"name":"string","emoji":"emoji","time":"X mins","calories":"kcal","protein":"Xg","description":"1-2 sentences","steps":["step1","step2","step3"],"tip":"tip"}]}' }]
       })
     });
+    if (!response.ok) {
+      var errText = await response.text();
+      throw new Error('API error: ' + response.status + ' - ' + (errText || 'Check API key'));
+    }
     var data = await response.json();
     var textBlock = (data.content || []).find(function(c) { return c.type === 'text'; });
     if (!textBlock) throw new Error('No response from AI');
