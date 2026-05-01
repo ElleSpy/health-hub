@@ -3672,8 +3672,10 @@ function selectDay(workoutType, cardEl) {
     const targetEl = document.getElementById(targetId);
     if (targetEl) {
       targetEl.style.display = 'block';
-      // Render class times if this workout has any
-      renderClassTimes(workoutType);
+      // Render class times only for class-based workouts
+      if (CLASS_WORKOUTS.includes(workoutType)) {
+        renderClassTimes(workoutType);
+      }
     }
   }
 }
@@ -3683,6 +3685,7 @@ function selectDay(workoutType, cardEl) {
 // ============================================================
 
 const CLASS_TIMES_KEY = 'laura_class_times_v1';
+const CLASS_WORKOUTS = ['blaze', 'cyclone', 'rhythm']; // Only these can have class times
 
 // Load class times from storage
 function loadClassTimes() {
@@ -3734,6 +3737,9 @@ function getClassTimes(workoutType) {
 
 // Render class times in a detail section
 function renderClassTimes(workoutType) {
+  // Only render for class-based workouts
+  if (!CLASS_WORKOUTS.includes(workoutType)) return;
+
   const times = getClassTimes(workoutType);
   const detailEl = document.getElementById(WORKOUT_LIBRARY[workoutType]?.id);
   if (!detailEl) return;
