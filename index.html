@@ -3902,11 +3902,11 @@ function renderClassTimesManager(workoutType) {
     container.appendChild(header);
 
     const list = document.createElement('div');
-    list.style.cssText = 'display:flex;flex-direction:column;gap:6px;';
+    list.style.cssText = 'display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px;';
 
     sorted.forEach(t => {
       const item = document.createElement('div');
-      item.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:var(--card);border-radius:var(--radius-sm);border:1px solid var(--border);';
+      item.style.cssText = 'display:flex;justify-content:space-between;align-items:flex-start;padding:8px 10px;background:var(--card);border-radius:var(--radius-sm);border:1px solid var(--border);';
 
       const info = document.createElement('div');
       info.style.cssText = 'flex:1;';
