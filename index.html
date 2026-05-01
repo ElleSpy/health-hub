@@ -383,6 +383,22 @@
       <button class="sync-btn" style="margin-top:12px;" onclick="saveClientId()">Save Client ID</button>
     </div>
 
+    <!-- Anthropic API Key setup -->
+    <div id="api-key-setup" style="display:none;">
+      <div class="sync-setup">
+        <div class="sync-setup-title">Add Anthropic API Key — for meal suggestions</div>
+        <div class="sync-step"><span class="sync-step-num">1</span>Go to <strong>console.anthropic.com</strong> and sign in</div>
+        <div class="sync-step"><span class="sync-step-num">2</span>Go to <strong>Account → API Keys</strong></div>
+        <div class="sync-step"><span class="sync-step-num">3</span>Click <strong>Create Key</strong> and copy it</div>
+        <div class="sync-step"><span class="sync-step-num">4</span>Paste your API key below</div>
+      </div>
+      <div class="sync-input-wrap">
+        <input id="api-key-input" class="sync-input" type="password" placeholder="Paste your Anthropic API key here (starts with sk-)">
+      </div>
+      <button class="sync-btn" style="margin-top:12px;" onclick="saveAnthropicApiKey(document.getElementById('api-key-input').value)">Save API Key</button>
+      <button class="sync-btn-secondary" style="margin-top:8px;" onclick="document.getElementById('api-key-setup').style.display='none'; document.getElementById('signin-btn-wrap').style.display='block';">Skip for now</button>
+    </div>
+
     <!-- Sign in button (shown when client ID is set) -->
     <div id="signin-btn-wrap">
       <button class="sync-btn" onclick="signIn()">
@@ -393,6 +409,8 @@
       <div style="font-size:11px;color:var(--text3);margin-top:10px;">Your data is stored only in your own Google Drive.<br>No data is shared with anyone.</div>
       <div style="margin-top:10px;">
         <button onclick="showClientIdSetup()" style="background:none;border:none;font-size:12px;color:var(--text3);cursor:pointer;text-decoration:underline;">Change Client ID</button>
+        <span style="color:var(--text3);">•</span>
+        <button onclick="document.getElementById('api-key-setup').style.display='block'; document.getElementById('signin-btn-wrap').style.display='none';" style="background:none;border:none;font-size:12px;color:var(--text3);cursor:pointer;text-decoration:underline;">Add API Key</button>
       </div>
     </div>
   </div>
@@ -477,6 +495,13 @@
     </button>
     <button class="nav-item" onclick="goTo('supplements', this)">
       <span class="nav-icon">💊</span> Supplements
+    </button>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Admin</div>
+    <button class="nav-item" onclick="goTo('settings', this)">
+      <span class="nav-icon">⚙️</span> Settings
     </button>
   </div>
   </div><!-- end sidebar-scroll -->
@@ -2404,6 +2429,64 @@ function showCuisine(id, el) {
   </div>
 </div>
 
+<!-- ===================== SETTINGS ===================== -->
+<div id="page-settings" class="page">
+  <div class="page-header">
+    <div class="page-eyebrow">Configuration</div>
+    <div class="page-title">Settings</div>
+    <div class="page-sub">Manage API keys and app configuration</div>
+  </div>
+
+  <div class="card" style="margin-bottom:20px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;padding:12px 16px;background:var(--blue-light);border-radius:var(--radius-sm);">
+      <span style="font-size:18px;">🔑</span>
+      <div style="font-size:13px;color:var(--blue);"><strong>Anthropic API Key</strong> — Required for meal suggestions powered by Claude</div>
+    </div>
+
+    <div style="margin-bottom:16px;">
+      <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:8px;">API Key</div>
+      <input id="settings-api-key" type="password" placeholder="paste your Anthropic API key here" style="width:100%;padding:12px 14px;border-radius:var(--radius-sm);border:1.5px solid var(--border);font-family:'DM Mono',monospace;font-size:13px;background:var(--bg);color:var(--text);outline:none;" onfocus="this.style.borderColor='var(--teal)'" onblur="this.style.borderColor='var(--border)'">
+    </div>
+
+    <div style="display:flex;gap:10px;margin-bottom:16px;">
+      <button onclick="saveApiKeySettings()" style="flex:1;padding:12px;background:var(--teal);color:#fff;border:none;border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Save API Key</button>
+      <button onclick="toggleApiKeyVisibility(this)" style="padding:12px 16px;background:var(--border);color:var(--text);border:none;border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;">Show</button>
+    </div>
+
+    <div id="api-key-status" style="font-size:13px;color:var(--text2);padding:12px;background:var(--bg);border-radius:var(--radius-sm);border-left:3px solid var(--border);">
+      <span id="api-key-status-text">No API key configured yet</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:12px;">How to get your API key</div>
+    <div style="display:flex;flex-direction:column;gap:10px;font-size:13px;color:var(--text2);line-height:1.6;">
+      <div style="display:flex;gap:10px;align-items:flex-start;">
+        <div style="background:var(--teal);color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-weight:600;flex-shrink:0;font-size:12px;">1</div>
+        <div>Go to <a href="https://console.anthropic.com/keys" target="_blank" style="color:var(--teal);text-decoration:none;font-weight:500;">Anthropic Console</a> and create an account if needed</div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;">
+        <div style="background:var(--teal);color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-weight:600;flex-shrink:0;font-size:12px;">2</div>
+        <div>Click <strong>"Create Key"</strong> in the API Keys section</div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;">
+        <div style="background:var(--teal);color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-weight:600;flex-shrink:0;font-size:12px;">3</div>
+        <div>Give it a name (e.g. "Health Tracker App") and click Create</div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;">
+        <div style="background:var(--teal);color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-weight:600;flex-shrink:0;font-size:12px;">4</div>
+        <div>Copy the key from the console and paste it in the field above</div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px;padding:12px;background:var(--amber-light);border-radius:var(--radius-sm);border-left:3px solid var(--amber);">
+      <div style="font-size:12px;color:var(--amber);">
+        <strong>⚠️ Keep your key private</strong> — Your API key is stored locally in your browser. Never share it with anyone. It's only used to authenticate requests to Claude for meal suggestions.
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- SUPPLEMENT EDIT MODAL -->
 <div id="supp-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:1000;align-items:center;justify-content:center;">
   <div style="background:var(--card);border-radius:var(--radius);padding:28px;max-width:540px;width:92%;max-height:85vh;overflow-y:auto;box-shadow:var(--shadow-lg);">
@@ -2565,6 +2648,7 @@ function goTo(page, el) {
   if (page === 'progress') renderProgress();
   if (page === 'shop') refreshPlannerShoppingList();
   if (page === 'fridge') renderFridgeTags();
+  if (page === 'settings') updateApiKeyStatus();
   if (window.innerWidth <= 900) closeSidebar();
 }
 
@@ -2580,6 +2664,7 @@ function switchEat(id, el) {
 // ============================================================
 
 const CLIENT_ID_STORAGE = 'laura_goog_client_id';
+const ANTHROPIC_API_KEY_STORAGE = 'laura_anthropic_api_key';
 const DRIVE_FILE_NAME   = 'laura_app_data.json';
 const DRIVE_SCOPE       = 'https://www.googleapis.com/auth/drive.appdata https://www.googleapis.com/auth/drive.file';
 
@@ -2606,6 +2691,58 @@ function showClientIdSetup() {
   document.getElementById('client-id-input').value = getClientId();
   document.getElementById('client-id-setup').style.display = 'block';
   document.getElementById('signin-btn-wrap').style.display = 'none';
+}
+
+// ---- Anthropic API Key management ----
+function getAnthropicApiKey() { return localStorage.getItem(ANTHROPIC_API_KEY_STORAGE) || ''; }
+function saveAnthropicApiKey(key) {
+  if (!key || !key.trim()) {
+    alert('Please enter a valid API key');
+    return;
+  }
+  localStorage.setItem(ANTHROPIC_API_KEY_STORAGE, key.trim());
+  alert('API key saved! The meal suggestion feature is now active.');
+}
+function hasAnthropicApiKey() { return !!getAnthropicApiKey(); }
+
+// ---- Settings page ----
+function saveApiKeySettings() {
+  const keyInput = document.getElementById('settings-api-key');
+  const key = keyInput.value;
+  if (!key || !key.trim()) {
+    alert('Please enter a valid API key');
+    return;
+  }
+  localStorage.setItem(ANTHROPIC_API_KEY_STORAGE, key.trim());
+  updateApiKeyStatus();
+  alert('✓ API key saved! The meal suggestion feature is now active.');
+}
+
+function toggleApiKeyVisibility(btn) {
+  const keyInput = document.getElementById('settings-api-key');
+  if (keyInput.type === 'password') {
+    keyInput.type = 'text';
+    btn.textContent = 'Hide';
+  } else {
+    keyInput.type = 'password';
+    btn.textContent = 'Show';
+  }
+}
+
+function updateApiKeyStatus() {
+  const statusEl = document.getElementById('api-key-status-text');
+  const keyInput = document.getElementById('settings-api-key');
+  const hasKey = hasAnthropicApiKey();
+
+  if (hasKey) {
+    const key = getAnthropicApiKey();
+    const displayKey = key.substring(0, 10) + '•'.repeat(Math.max(0, key.length - 10));
+    statusEl.innerHTML = `<span style="color:var(--teal);font-weight:500;">✓ API key is configured</span><br><span style="font-size:12px;color:var(--text3);margin-top:4px;display:block;">Key: ${displayKey}</span>`;
+    keyInput.value = key;
+  } else {
+    statusEl.textContent = 'No API key configured yet';
+    keyInput.value = '';
+  }
 }
 
 // ---- Sign in / out ----
@@ -3433,6 +3570,7 @@ const SUPP_DAYS = [
 ];
 
 const DAILY_ROUTINE_KEY = 'laura_daily_routine_v1';
+const FRIDGE_KEY = 'laura_fridge_ingredients_v1';
 
 // ============================================================
 // WORKOUT CUSTOMIZATION SYSTEM
@@ -4621,7 +4759,7 @@ function renderSuppCheckin() {
 }
 
 function loadFridgeItems() { return getData(FRIDGE_KEY, []); }
-function saveFridgeItems(items) { saveData(FRIDGE_KEY, items); }
+function saveFridgeItems(items) { setData(FRIDGE_KEY, items); }
 
 function renderFridgeTags() {
   var tags = document.getElementById('fridge-tags');
@@ -4689,9 +4827,19 @@ async function getFridgeSuggestions() {
   resultsEl.appendChild(loading);
 
   try {
+    var apiKey = getAnthropicApiKey();
+    if (!apiKey) {
+      resultsEl.innerHTML = '';
+      var msg = document.createElement('div');
+      msg.className = 'card';
+      msg.style.cssText = 'color:var(--red);background:var(--red-light);padding:20px;border-radius:var(--radius);';
+      msg.innerHTML = '<strong>API Key needed:</strong> To use meal suggestions, you need to add your Anthropic API key in Settings.';
+      resultsEl.appendChild(msg);
+      return;
+    }
     var response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey },
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
         max_tokens: 1000,
