@@ -2638,6 +2638,7 @@ function launchApp() {
   document.getElementById('sync-indicator').style.display = gSyncEnabled ? 'flex' : 'none';
   const today = new Date().toISOString().split('T')[0];
   document.getElementById('log-date').value = today;
+  renderDayCards();
   updateDashboard();
   renderLongevityChecks();
   renderPlanner();
@@ -3740,45 +3741,47 @@ function renderClassTimes(workoutType) {
   const existingTimes = detailEl.querySelector('.class-times-container');
   if (existingTimes) existingTimes.remove();
 
-  if (times.length === 0) return;
-
   const container = document.createElement('div');
   container.className = 'class-times-container';
   container.style.cssText = 'margin:16px 0;padding:16px;background:var(--bg2);border-radius:var(--radius-sm);';
 
-  const header = document.createElement('div');
-  header.style.cssText = 'font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);font-family:\'DM Mono\',monospace;margin-bottom:12px;';
-  header.textContent = 'Stored times';
-  container.appendChild(header);
+  // Only show header and times list if times exist
+  if (times.length > 0) {
+    const header = document.createElement('div');
+    header.style.cssText = 'font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);font-family:\'DM Mono\',monospace;margin-bottom:12px;';
+    header.textContent = 'Stored times';
+    container.appendChild(header);
 
-  const timesList = document.createElement('div');
-  timesList.style.cssText = 'display:flex;flex-direction:column;gap:8px;';
+    const timesList = document.createElement('div');
+    timesList.style.cssText = 'display:flex;flex-direction:column;gap:8px;';
 
-  times.forEach(t => {
-    const timeItem = document.createElement('div');
-    timeItem.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--card);border-radius:var(--radius-sm);border:1px solid var(--border);';
+    times.forEach(t => {
+      const timeItem = document.createElement('div');
+      timeItem.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--card);border-radius:var(--radius-sm);border:1px solid var(--border);';
 
-    const timeText = document.createElement('div');
-    timeText.style.cssText = 'flex:1;';
-    timeText.innerHTML = `<div style="font-weight:600;font-size:13px;">${t.day.charAt(0).toUpperCase() + t.day.slice(1)} · ${t.time}</div>${t.location ? `<div style="font-size:11px;color:var(--text2);margin-top:2px;">${t.location}</div>` : ''}`;
+      const timeText = document.createElement('div');
+      timeText.style.cssText = 'flex:1;';
+      timeText.innerHTML = `<div style="font-weight:600;font-size:13px;">${t.day.charAt(0).toUpperCase() + t.day.slice(1)} · ${t.time}</div>${t.location ? `<div style="font-size:11px;color:var(--text2);margin-top:2px;">${t.location}</div>` : ''}`;
 
-    const deleteBtn = document.createElement('button');
-    deleteBtn.style.cssText = 'padding:6px 10px;background:none;border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text3);font-size:12px;cursor:pointer;transition:all 0.15s;';
-    deleteBtn.textContent = 'Delete';
-    deleteBtn.onmouseover = () => { deleteBtn.style.borderColor = 'var(--text)'; deleteBtn.style.color = 'var(--text)'; };
-    deleteBtn.onmouseout = () => { deleteBtn.style.borderColor = 'var(--border)'; deleteBtn.style.color = 'var(--text3)'; };
-    deleteBtn.onclick = () => removeClassTime(workoutType, t.id);
+      const deleteBtn = document.createElement('button');
+      deleteBtn.style.cssText = 'padding:6px 10px;background:none;border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text3);font-size:12px;cursor:pointer;transition:all 0.15s;';
+      deleteBtn.textContent = 'Delete';
+      deleteBtn.onmouseover = () => { deleteBtn.style.borderColor = 'var(--text)'; deleteBtn.style.color = 'var(--text)'; };
+      deleteBtn.onmouseout = () => { deleteBtn.style.borderColor = 'var(--border)'; deleteBtn.style.color = 'var(--text3)'; };
+      deleteBtn.onclick = () => removeClassTime(workoutType, t.id);
 
-    timeItem.appendChild(timeText);
-    timeItem.appendChild(deleteBtn);
-    timesList.appendChild(timeItem);
-  });
+      timeItem.appendChild(timeText);
+      timeItem.appendChild(deleteBtn);
+      timesList.appendChild(timeItem);
+    });
 
-  container.appendChild(timesList);
+    container.appendChild(timesList);
+  }
 
-  // Add button
+  // Always show the Add button (even if no times yet)
   const addBtn = document.createElement('button');
-  addBtn.style.cssText = 'width:100%;margin-top:12px;padding:10px 12px;background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-sm);color:var(--text2);font-size:13px;font-weight:500;cursor:pointer;transition:all 0.15s;font-family:\'DM Sans\',sans-serif;';
+  const marginTop = times.length > 0 ? '12px' : '0px';
+  addBtn.style.cssText = `width:100%;margin-top:${marginTop};padding:10px 12px;background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-sm);color:var(--text2);font-size:13px;font-weight:500;cursor:pointer;transition:all 0.15s;font-family:'DM Sans',sans-serif;`;
   addBtn.textContent = '+ Add another time';
   addBtn.onmouseover = () => { addBtn.style.borderColor = 'var(--text)'; addBtn.style.color = 'var(--text)'; addBtn.style.background = 'var(--bg)'; };
   addBtn.onmouseout = () => { addBtn.style.borderColor = 'var(--border)'; addBtn.style.color = 'var(--text2)'; addBtn.style.background = 'var(--card)'; };
