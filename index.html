@@ -1291,6 +1291,20 @@
     <div class="page-sub">Track and manage your training blocks · See what's done and what's in progress</div>
   </div>
 
+  <!-- Sync status & controls -->
+  <div class="card" style="margin-bottom:16px;background:var(--bg2);border:1px dashed var(--border);">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+      <div>
+        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);font-family:'DM Mono',monospace;">Sync status</div>
+        <div id="rp-sync-status" style="font-size:14px;color:var(--text2);margin-top:4px;">Checking…</div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button onclick="forceBackupNow()" title="Save the current data on this device to Google Drive immediately" style="padding:8px 14px;background:var(--teal);color:#fff;border:none;border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;font-size:13px;">↑ Backup to Drive</button>
+        <button onclick="restoreLocalBackup()" title="If Drive lost your data, restore it from this device's offline backup" style="padding:8px 14px;background:var(--card);color:var(--text2);border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-weight:500;cursor:pointer;font-size:13px;">↻ Restore from this device</button>
+      </div>
+    </div>
+  </div>
+
   <div class="card" style="margin-bottom:20px;">
     <div class="card-title" style="margin-bottom:16px;">Add a new running plan</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
@@ -2740,6 +2754,7 @@ function goTo(page, el) {
   if (page === 'progress') renderProgress();
   if (page === 'shop') { refreshPlannerShoppingList(); renderShoppingTickList(); }
   if (page === 'workouts') renderGymWorkouts();
+  if (page === 'runningplans') updateRunningPlansSyncStatus();
   if (page === 'settings') updateApiKeyStatus();
   if (page === 'classes') CLASS_WORKOUTS.forEach(w => renderClassTimesManager(w));
   if (window.innerWidth <= 900) closeSidebar();
@@ -4854,7 +4869,10 @@ function loadCheckin() {
   return s[getTodayKey()] || {};
 }
 function saveCheckin(state) {
-  saveData(CHECKIN_KEY, { [getTodayKey()]: state });
+  // Preserve check-ins from other days — don't blow them away
+  var allDays = getData(CHECKIN_KEY, {});
+  allDays[getTodayKey()] = state;
+  setData(CHECKIN_KEY, allDays); // setData persists to gAppData + scheduleSave (Drive + localStorage)
 }
 function toggleSuppCheckin(suppId) {
   var state = loadCheckin();
@@ -5682,6 +5700,84 @@ function deleteCustomGymWorkout(id) {
 
 // Initial render
 setTimeout(renderGymWorkouts, 150);
+
+// ===================== SYNC HELPERS (Running Plans page) =====================
+function updateRunningPlansSyncStatus() {
+  var el = document.getElementById('rp-sync-status');
+  if (!el) return;
+  var plans = (gAppData && gAppData[RUNNING_PLANS_KEY]) || [];
+  var localBackupPlans = [];
+  try {
+    var fb = localStorage.getItem('laura_app_data_fallback');
+    if (fb) {
+      var parsed = JSON.parse(fb);
+      localBackupPlans = (parsed && parsed[RUNNING_PLANS_KEY]) || [];
+    }
+  } catch(e) {}
+
+  var bits = [];
+  bits.push(plans.length + ' plan' + (plans.length === 1 ? '' : 's') + ' loaded');
+  if (typeof gSyncEnabled !== 'undefined' && gSyncEnabled) {
+    bits.push('Drive sync: <span style="color:var(--teal);font-weight:600;">on</span>');
+  } else {
+    bits.push('Drive sync: <span style="color:var(--red);font-weight:600;">off</span> (sign in to enable)');
+  }
+  bits.push(localBackupPlans.length + ' plan' + (localBackupPlans.length === 1 ? '' : 's') + ' in this device\'s offline backup');
+  el.innerHTML = bits.join(' · ');
+}
+
+// Force-save the current in-memory data to Google Drive right now (no debounce).
+// Use when you suspect a save didn't sync to other devices.
+async function forceBackupNow() {
+  if (typeof gSyncEnabled === 'undefined' || !gSyncEnabled) {
+    alert('You\'re not signed in to Google Drive. Sign in first (refresh the page) so your data can sync.');
+    return;
+  }
+  try {
+    setSyncStatus && setSyncStatus('saving', 'Backing up…');
+    // Ensure latest is in localStorage too
+    try { localStorage.setItem('laura_app_data_fallback', JSON.stringify(gAppData)); } catch(e) {}
+    await saveToDrive();
+    alert('✓ Backup complete. Your data is now on Google Drive — open the app on another device (or refresh) and sign in to see it.');
+    updateRunningPlansSyncStatus();
+  } catch(e) {
+    console.error(e);
+    alert('Backup failed: ' + (e && e.message ? e.message : e));
+  }
+}
+
+// Restore data from this device's offline localStorage backup, then push to Drive.
+// Useful if Drive overwrote your edits when you signed in.
+async function restoreLocalBackup() {
+  var fb;
+  try { fb = JSON.parse(localStorage.getItem('laura_app_data_fallback') || '{}'); }
+  catch(e) { fb = null; }
+  if (!fb || Object.keys(fb).length === 0) {
+    alert('No offline backup found on this device.');
+    return;
+  }
+  var fbPlans = fb[RUNNING_PLANS_KEY] || [];
+  var currentPlans = (gAppData && gAppData[RUNNING_PLANS_KEY]) || [];
+  var msg = 'Restore data from this device\'s offline backup?\n\n' +
+            'Currently loaded: ' + currentPlans.length + ' running plan(s)\n' +
+            'In offline backup: ' + fbPlans.length + ' running plan(s)\n\n' +
+            'Restoring will replace currently-loaded data with the backup, then push it to Google Drive.';
+  if (!confirm(msg)) return;
+  // Merge: take all keys from backup
+  Object.keys(fb).forEach(function(k) { gAppData[k] = fb[k]; });
+  if (typeof gSyncEnabled !== 'undefined' && gSyncEnabled) {
+    try {
+      await saveToDrive();
+      alert('✓ Restored and uploaded to Drive. Open on another device to verify.');
+    } catch(e) {
+      alert('Restored locally but Drive upload failed: ' + e.message);
+    }
+  } else {
+    alert('Restored locally. Sign in to Drive to sync to other devices.');
+  }
+  if (typeof renderRunningPlans === 'function') renderRunningPlans();
+  updateRunningPlansSyncStatus();
+}
 </script>
 
 </body>
