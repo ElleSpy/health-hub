@@ -276,6 +276,17 @@
 
   /* ---- SHOPPING LIST ---- */
   .shop-section-f { margin-bottom: 20px; }
+  .shop-item-f.shop-item-tickable { cursor: pointer; user-select: none; display: flex; align-items: flex-start; gap: 10px; transition: opacity 0.15s, background 0.15s; }
+  .shop-item-f.shop-item-tickable .shop-tick-box { flex: 0 0 20px; width: 20px; height: 20px; border: 1.5px solid var(--border); border-radius: 5px; display: flex; align-items: center; justify-content: center; background: var(--card); margin-top: 1px; transition: all 0.15s; }
+  .shop-item-f.shop-item-tickable .shop-tick-content { flex: 1; min-width: 0; }
+  .shop-item-f.shop-item-tickable.checked { opacity: 0.45; background: var(--bg); }
+  .shop-item-f.shop-item-tickable.checked .shop-tick-box { background: var(--teal); border-color: var(--teal); }
+  .shop-item-f.shop-item-tickable.checked .shop-tick-box::after { content: '✓'; color: #fff; font-size: 13px; font-weight: 700; line-height: 1; }
+  .shop-item-f.shop-item-tickable.checked .shop-item-name { text-decoration: line-through; }
+  #shop-tick-controls { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 14px; }
+  #shop-tick-controls .pill-btn { padding: 6px 14px; border-radius: 999px; border: 1.5px solid var(--border); background: var(--card); color: var(--text2); font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.15s; }
+  #shop-tick-controls .pill-btn:hover { border-color: var(--text); color: var(--text); }
+  #shop-tick-controls .shop-tick-progress { font-size: 12px; color: var(--text3); font-family: 'DM Mono', monospace; margin-left: auto; }
   .shop-section-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); font-family: 'DM Mono', monospace; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
   .shop-grid-f { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 8px; }
   .shop-item-f { background: var(--bg2); border-radius: var(--radius-sm); padding: 10px 13px; }
@@ -413,16 +424,39 @@
       grid-template-columns: 1fr 1fr !important;
     }
 
-    /* Running plan cards: stack content and buttons */
+    /* Running plan cards: stack content and buttons cleanly */
     #running-plans-list .card {
       flex-direction: column !important;
-      align-items: flex-start !important;
+      align-items: stretch !important;
       gap: 14px !important;
+      text-align: left !important;
+    }
+    #running-plans-list .card > div:first-child {
+      width: 100%;
     }
     #running-plans-list .card > div:last-child {
       margin-left: 0 !important;
       width: 100%;
-      justify-content: flex-end !important;
+      justify-content: flex-start !important;
+    }
+    /* Plan meta (Duration / Started / Finish): wrap nicely on small screens */
+    #running-plans-list .card > div:first-child > div:last-child {
+      flex-wrap: wrap !important;
+      gap: 14px !important;
+    }
+    /* Running Plans add form: stack into single column on phone */
+    #page-runningplans .card > div[style*="grid-template-columns"] {
+      grid-template-columns: 1fr !important;
+    }
+
+    /* Meal planner day rows: 2x2 grid for slots, edge-to-edge */
+    #planner-grid > div > div:last-child {
+      grid-template-columns: 1fr 1fr !important;
+      padding: 12px !important;
+      gap: 8px !important;
+    }
+    #planner-grid > div > div:first-child {
+      padding: 12px 14px !important;
     }
 
     /* Stat cards: tighten up value text */
@@ -502,9 +536,7 @@
 <!-- SIDEBAR -->
 <nav class="sidebar">
   <div class="sidebar-logo">
-    <div class="logo-eyebrow">My Plan</div>
     <div class="logo-name">Laura's<br>Health Hub</div>
-    <div class="logo-sub">David Lloyd · Purley & Beckenham</div>
   </div>
 
   <div class="sidebar-scroll">
@@ -869,16 +901,10 @@
 
   <div id="day-legs" class="card day-detail" style="display:none;">
     <div class="workout-header">
-      <span class="badge badge-teal">Double session · Thu WFH</span>
-      <div><div class="workout-title">Thursday — Legs + lunchtime run</div>
-      <div class="workout-meta">Legs gym (pre-work) · then interval run at lunch · WFH flexibility</div></div>
+      <span class="badge badge-teal">Strength · Legs</span>
+      <div><div class="workout-title">Legs</div>
+      <div class="workout-meta">Quads · Hamstrings · Glutes &nbsp;|&nbsp; ~55 min</div></div>
     </div>
-    <div style="background:var(--teal-light);border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:10px;">
-      <span style="font-size:18px;">💡</span>
-      <div style="font-size:13px;color:var(--teal);"><strong>Suggested timing:</strong> Gym 7–8:30am before work, log on from home. Lunchtime run 12:30–1pm — no commute means you can be back at your desk in under 30 minutes.</div>
-    </div>
-
-    <div style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:10px;">Part 1 · Legs gym session · Morning</div>
     <table class="ex-table">
       <thead><tr><th>Exercise</th><th>Type</th><th>Sets</th><th>Reps</th><th>Rest</th></tr></thead>
       <tbody>
@@ -890,21 +916,11 @@
         <tr><td><div class="ex-name-cell">Standing calf raises</div><div class="ex-focus">Gastrocnemius · Full ROM</div></td><td><span class="badge badge-amber">Isolation</span></td><td><span class="pill-sm pill-sets">4</span></td><td><span class="pill-sm pill-reps">15–20</span></td><td><span class="pill-sm pill-rest">60s</span></td></tr>
       </tbody>
     </table>
-
-    <div style="margin:18px 0;border-top:1px solid var(--border);"></div>
-    <div style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:10px;">Part 2 · Lunchtime interval run · ~30 min</div>
-    <div class="grid-2" style="gap:10px;margin-bottom:14px;">
-      <div style="background:var(--blue-light);border-radius:var(--radius-sm);padding:14px;"><div style="font-size:12px;font-weight:600;color:var(--blue);margin-bottom:4px;">THE SESSION</div><div style="font-size:13px;color:var(--text2);">5 min easy warm-up jog · 5 × 2 min hard (7/10 effort) with 90s easy jog recovery · 5 min cool-down walk. Total ~30 min.</div></div>
-      <div style="background:var(--teal-light);border-radius:var(--radius-sm);padding:14px;"><div style="font-size:12px;font-weight:600;color:var(--teal);margin-bottom:4px;">WHY SHORTER?</div><div style="font-size:13px;color:var(--text2);">Your legs will already be worked from the morning gym session. Fewer intervals, slightly lower intensity — this is intentional. Quality over volume.</div></div>
-      <div style="background:var(--amber-light);border-radius:var(--radius-sm);padding:14px;"><div style="font-size:12px;font-weight:600;color:var(--amber);margin-bottom:4px;">NUTRITION BRIDGE</div><div style="font-size:13px;color:var(--text2);">After gym: have your proper breakfast. Before lunch run: a banana or small snack 20 min prior. Full lunch after the run.</div></div>
-      <div style="background:var(--purple-light);border-radius:var(--radius-sm);padding:14px;"><div style="font-size:12px;font-weight:600;color:var(--purple);margin-bottom:4px;">IF LEGS ARE DEAD</div><div style="font-size:13px;color:var(--text2);">Replace the run with a 20 min easy walk. Especially in the first few weeks — let your body adapt to the double load gradually.</div></div>
-    </div>
-    <div class="tip-box-f">
-      <div class="tip-box-title">Thursday WFH double session tips</div>
-      <div class="tip-item"><span class="tip-dot-f"></span>Leave your running kit by the front door in the morning so lunchtime needs zero thought</div>
-      <div class="tip-item"><span class="tip-dot-f"></span>Check your Whoop recovery first — if it's red, do gym only and skip the lunchtime run</div>
-      <div class="tip-item"><span class="tip-dot-f"></span>WFH means you can shower and eat properly between sessions — a huge advantage over office days</div>
-      <div class="tip-item"><span class="tip-dot-f"></span>Thursday is your highest volume day — eat well in the evening to support recovery for Friday's Blaze</div>
+    <div class="tip-box-f" style="margin-top:16px;">
+      <div class="tip-box-title">Tips</div>
+      <div class="tip-item"><span class="tip-dot-f"></span>Warm up with bodyweight squats and hip openers</div>
+      <div class="tip-item"><span class="tip-dot-f"></span>Brace your core hard before each squat rep</div>
+      <div class="tip-item"><span class="tip-dot-f"></span>Romanian deadlifts: hinge from the hips, knees only soft</div>
     </div>
   </div>
 
@@ -1145,31 +1161,55 @@
 <!-- ===================== WORKOUTS ===================== -->
 <div id="page-workouts" class="page">
   <div class="page-header">
-    <div class="page-eyebrow">Training</div>
-    <div class="page-title">Gym workouts</div>
-    <div class="page-sub">3 sessions per week — Push (Mon) · Legs (Thu) · Pull (Sun)</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;width:100%;flex-wrap:wrap;gap:12px;">
+      <div>
+        <div class="page-eyebrow">Training</div>
+        <div class="page-title">Gym workouts</div>
+        <div class="page-sub">Browse your workouts and add new ones · Pick any of these for any day</div>
+      </div>
+      <button onclick="openAddGymWorkoutModal()" style="padding:10px 18px;background:var(--teal);color:#fff;border:none;border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;font-size:14px;white-space:nowrap;">+ Add workout</button>
+    </div>
   </div>
   <div class="card" style="margin-bottom:16px;">
     <div style="font-size:13.5px;color:var(--text2);line-height:1.7;"><strong style="color:var(--text);">Progressive overload is the key.</strong> Track your weights every session. When you hit the top of the rep range for 2 sessions in a row, add 2.5kg and work back up. This consistent progression drives strength and muscle gain over time. David Lloyd Purley and Beckenham both have full free weights and cable areas.</div>
   </div>
-  <div class="grid-3">
-    <div class="card card-sm" style="cursor:pointer;" onclick="goTo('training', document.querySelector('[onclick*=training]'));document.querySelectorAll('#weekStrip .day-card')[0].click();">
-      <div style="font-size:24px;margin-bottom:8px;">💪</div>
-      <div class="card-title" style="font-size:15px;">Monday — Push</div>
-      <div class="card-sub">Chest · Shoulders · Triceps · ~55 min</div>
-      <div style="margin-top:10px;font-size:12px;color:var(--teal);font-weight:500;">6 exercises →</div>
+  <div id="gym-workouts-list"></div>
+</div>
+
+<!-- ADD GYM WORKOUT MODAL -->
+<div id="add-gym-workout-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:999;align-items:center;justify-content:center;">
+  <div style="background:var(--card);border-radius:var(--radius);padding:28px;max-width:600px;width:92%;max-height:88vh;overflow-y:auto;box-shadow:var(--shadow-lg);">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;">Add a custom gym workout</div>
+      <button onclick="closeAddGymWorkoutModal()" style="font-size:22px;background:none;border:none;cursor:pointer;color:var(--text3);line-height:1;">✕</button>
     </div>
-    <div class="card card-sm" style="cursor:pointer;" onclick="goTo('training', document.querySelector('[onclick*=training]'));document.querySelectorAll('#weekStrip .day-card')[3].click();">
-      <div style="font-size:24px;margin-bottom:8px;">🦵</div>
-      <div class="card-title" style="font-size:15px;">Thursday — Legs + lunchtime run</div>
-      <div class="card-sub">Quads · Hamstrings · Glutes · Pre-work gym + lunch run</div>
-      <div style="margin-top:10px;font-size:12px;color:var(--teal);font-weight:500;">6 exercises + run →</div>
-    </div>
-    <div class="card card-sm" style="cursor:pointer;" onclick="goTo('training', document.querySelector('[onclick*=training]'));document.querySelectorAll('#weekStrip .day-card')[6].click();">
-      <div style="font-size:24px;margin-bottom:8px;">🏋️</div>
-      <div class="card-title" style="font-size:15px;">Sunday — Pull + optional run</div>
-      <div class="card-sub">Back · Biceps · Core · Optional long run after</div>
-      <div style="margin-top:10px;font-size:12px;color:var(--teal);font-weight:500;">6 exercises →</div>
+    <div style="font-size:13px;color:var(--text2);margin-bottom:16px;">Define a workout you can pick for any day. Exercises are entered one per line, fields separated by <code style="background:var(--bg2);padding:1px 6px;border-radius:4px;">|</code>:<br><code style="background:var(--bg2);padding:2px 6px;border-radius:4px;font-size:12px;">Exercise name | Focus | Type | Sets | Reps | Rest</code></div>
+
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div>
+        <label style="display:block;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--text3);margin-bottom:5px;">Workout name</label>
+        <input type="text" id="newGymWorkoutName" placeholder="e.g. Shoulders & Abs" style="width:100%;padding:10px 12px;border-radius:var(--radius-sm);border:1.5px solid var(--border);font-family:'DM Sans',sans-serif;font-size:14px;background:var(--bg);color:var(--text);outline:none;" />
+      </div>
+
+      <div>
+        <label style="display:block;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--text3);margin-bottom:5px;">Subtitle (optional)</label>
+        <input type="text" id="newGymWorkoutMeta" placeholder="e.g. Shoulders + core focus | ~40 min" style="width:100%;padding:10px 12px;border-radius:var(--radius-sm);border:1.5px solid var(--border);font-family:'DM Sans',sans-serif;font-size:14px;background:var(--bg);color:var(--text);outline:none;" />
+      </div>
+
+      <div>
+        <label style="display:block;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--text3);margin-bottom:5px;">Exercises (one per line)</label>
+        <textarea id="newGymWorkoutExercises" rows="6" placeholder="Overhead press | Shoulders · Compound | Primary | 4 | 8-10 | 90s&#10;Lateral raises | Side delts | Isolation | 3 | 12-15 | 60s" style="width:100%;padding:10px 12px;border-radius:var(--radius-sm);border:1.5px solid var(--border);font-family:'DM Mono',monospace;font-size:12.5px;background:var(--bg);color:var(--text);outline:none;resize:vertical;"></textarea>
+      </div>
+
+      <div>
+        <label style="display:block;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--text3);margin-bottom:5px;">Tips (one per line, optional)</label>
+        <textarea id="newGymWorkoutTips" rows="3" placeholder="Pause at the top of every rep&#10;Keep core tight throughout" style="width:100%;padding:10px 12px;border-radius:var(--radius-sm);border:1.5px solid var(--border);font-family:'DM Sans',sans-serif;font-size:13px;background:var(--bg);color:var(--text);outline:none;resize:vertical;"></textarea>
+      </div>
+
+      <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px;">
+        <button onclick="closeAddGymWorkoutModal()" style="padding:10px 18px;background:none;color:var(--text2);border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-weight:500;cursor:pointer;font-size:14px;">Cancel</button>
+        <button onclick="saveCustomGymWorkout()" style="padding:10px 22px;background:var(--teal);color:#fff;border:none;border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;font-size:14px;">Save workout</button>
+      </div>
     </div>
   </div>
 </div>
@@ -1497,6 +1537,12 @@
       <button onclick="refreshPlannerShoppingList()" style="background:var(--teal);color:#fff;border:none;border-radius:var(--radius-sm);padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">↻ Refresh</button>
     </div>
     <div id="planner-ingredients-list" style="font-size:13.5px;color:var(--text2);"><em style="color:var(--text3);">Visit your Meal Planner first, then come back and hit Refresh.</em></div>
+  </div>
+
+  <div id="shop-tick-controls">
+    <button class="pill-btn" onclick="clearShoppingTicks()">Clear ticks</button>
+    <button class="pill-btn" onclick="tickAllShopping()">Tick all</button>
+    <div class="shop-tick-progress" id="shop-tick-progress">0 / 0 ticked</div>
   </div>
 
   <div class="grid-2">
@@ -2691,10 +2737,19 @@ function goTo(page, el) {
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   if (el) el.classList.add('active');
   if (page === 'progress') renderProgress();
-  if (page === 'shop') refreshPlannerShoppingList();
+  if (page === 'shop') { refreshPlannerShoppingList(); renderShoppingTickList(); }
+  if (page === 'workouts') renderGymWorkouts();
   if (page === 'settings') updateApiKeyStatus();
   if (page === 'classes') CLASS_WORKOUTS.forEach(w => renderClassTimesManager(w));
   if (window.innerWidth <= 900) closeSidebar();
+  // Scroll to the top of the page on every navigation
+  try {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    var mainEl = document.querySelector('.main');
+    if (mainEl) mainEl.scrollTop = 0;
+  } catch(e) {}
 }
 
 function switchEat(id, el) {
@@ -5096,6 +5151,422 @@ function renderRunningPlans() {
 
 // Initialize running plans on page load
 renderRunningPlans();
+
+// ===================== SHOPPING LIST TICKS =====================
+const SHOP_TICKS_KEY = 'shoppingTicks';
+
+function getShoppingTicks() {
+  return getData(SHOP_TICKS_KEY, {});
+}
+
+function setShoppingTicks(ticks) {
+  setData(SHOP_TICKS_KEY, ticks);
+  scheduleSave && scheduleSave();
+}
+
+function shopItemKey(el) {
+  // Use the item name as the unique key
+  var nameEl = el.querySelector('.shop-item-name');
+  return nameEl ? nameEl.textContent.trim() : '';
+}
+
+function renderShoppingTickList() {
+  // Convert each shop-item-f inside #page-shop into a tickable structure (idempotent)
+  var page = document.getElementById('page-shop');
+  if (!page) return;
+
+  var ticks = getShoppingTicks();
+  var items = page.querySelectorAll('.shop-item-f');
+  var total = 0, ticked = 0;
+
+  items.forEach(function(item) {
+    // Skip the planner ingredients list rendering
+    if (item.closest('#planner-ingredients-list')) return;
+
+    var key = shopItemKey(item);
+    if (!key) return;
+    total++;
+
+    // Add tickable class & wrap content if not already wrapped
+    if (!item.classList.contains('shop-item-tickable')) {
+      var nameEl = item.querySelector('.shop-item-name');
+      var noteEl = item.querySelector('.shop-item-note');
+      var name = nameEl ? nameEl.outerHTML : '';
+      var note = noteEl ? noteEl.outerHTML : '';
+      item.innerHTML = '<div class="shop-tick-box"></div><div class="shop-tick-content">' + name + note + '</div>';
+      item.classList.add('shop-item-tickable');
+      item.addEventListener('click', function() {
+        var k = shopItemKey(item);
+        var t = getShoppingTicks();
+        t[k] = !t[k];
+        setShoppingTicks(t);
+        renderShoppingTickList();
+      });
+    }
+
+    if (ticks[key]) {
+      item.classList.add('checked');
+      ticked++;
+    } else {
+      item.classList.remove('checked');
+    }
+  });
+
+  var prog = document.getElementById('shop-tick-progress');
+  if (prog) prog.textContent = ticked + ' / ' + total + ' ticked';
+}
+
+function clearShoppingTicks() {
+  setShoppingTicks({});
+  renderShoppingTickList();
+}
+
+function tickAllShopping() {
+  var page = document.getElementById('page-shop');
+  if (!page) return;
+  var t = {};
+  page.querySelectorAll('.shop-item-f').forEach(function(item) {
+    if (item.closest('#planner-ingredients-list')) return;
+    var k = shopItemKey(item);
+    if (k) t[k] = true;
+  });
+  setShoppingTicks(t);
+  renderShoppingTickList();
+}
+
+// Initialize on load
+setTimeout(renderShoppingTickList, 100);
+
+// ===================== GYM WORKOUTS PAGE =====================
+// Built-in gym workouts (single source of truth — also used by weekly schedule cards)
+const BUILTIN_GYM_WORKOUTS = [
+  {
+    id: 'push',
+    name: 'Push',
+    emoji: '💪',
+    color: 'teal',
+    badge: 'Strength · Push',
+    meta: 'Chest · Shoulders · Triceps  |  ~55 min',
+    exercises: [
+      { name:'Barbell bench press',          focus:'Compound · Chest focus',           type:'Primary',   sets:'4', reps:'8–10',  rest:'90s' },
+      { name:'Incline dumbbell press',       focus:'Upper chest · Shoulder tie-in',    type:'Secondary', sets:'3', reps:'10–12', rest:'75s' },
+      { name:'Seated dumbbell shoulder press', focus:'Deltoids · Overhead strength',   type:'Secondary', sets:'3', reps:'10–12', rest:'75s' },
+      { name:'Lateral raises',               focus:'Side deltoid · Shoulder width',    type:'Isolation', sets:'3', reps:'12–15', rest:'60s' },
+      { name:'Tricep rope pushdown',         focus:'Cable · Tricep long head',         type:'Isolation', sets:'3', reps:'12–15', rest:'60s' },
+      { name:'Overhead tricep extension',    focus:'Dumbbell · Full stretch',          type:'Isolation', sets:'3', reps:'12',    rest:'60s' },
+    ],
+    tips: [
+      '2 warm-up sets before working weight on bench press',
+      'Control the lowering phase — 2–3 seconds down',
+      'Add 2.5kg when you hit top of rep range for 2 sessions in a row',
+    ],
+  },
+  {
+    id: 'legs',
+    name: 'Legs',
+    emoji: '🦵',
+    color: 'teal',
+    badge: 'Strength · Legs',
+    meta: 'Quads · Hamstrings · Glutes  |  ~55 min',
+    exercises: [
+      { name:'Barbell back squat',     focus:'Compound · Biggest strength driver', type:'Primary',   sets:'4', reps:'8–10',   rest:'120s' },
+      { name:'Romanian deadlift',      focus:'Hamstrings · Glutes · Hip hinge',    type:'Primary',   sets:'3', reps:'10–12',  rest:'90s' },
+      { name:'Leg press',              focus:'Quad dominant · Load safely',        type:'Secondary', sets:'3', reps:'12–15',  rest:'75s' },
+      { name:'Walking lunges',         focus:'Unilateral · Glutes + balance',      type:'Secondary', sets:'3', reps:'12 each',rest:'75s' },
+      { name:'Leg curl',               focus:'Hamstring isolation · Machine',      type:'Isolation', sets:'3', reps:'12–15',  rest:'60s' },
+      { name:'Standing calf raises',   focus:'Gastrocnemius · Full ROM',           type:'Isolation', sets:'4', reps:'15–20',  rest:'60s' },
+    ],
+    tips: [
+      'Warm up with bodyweight squats and hip openers',
+      'Brace your core hard before each squat rep',
+      'Romanian deadlifts: hinge from the hips, knees only soft',
+    ],
+  },
+  {
+    id: 'pull',
+    name: 'Pull',
+    emoji: '🏋️',
+    color: 'purple',
+    badge: 'Strength · Pull',
+    meta: 'Back · Biceps · Rear delts  |  ~55 min',
+    exercises: [
+      { name:'Pull-ups / Lat pulldown', focus:'Compound · Wide back',          type:'Primary',   sets:'4', reps:'8–10',     rest:'90s' },
+      { name:'Seated cable row',        focus:'Mid-back · Rhomboids',           type:'Primary',   sets:'3', reps:'10–12',    rest:'75s' },
+      { name:'Single-arm dumbbell row', focus:'Unilateral · Lat focus',         type:'Secondary', sets:'3', reps:'10 each',  rest:'75s' },
+      { name:'Face pulls',              focus:'Rear deltoids · Shoulder health',type:'Accessory', sets:'3', reps:'15',       rest:'60s' },
+      { name:'Barbell bicep curl',      focus:'Biceps peak · Elbows tucked',    type:'Isolation', sets:'3', reps:'10–12',    rest:'60s' },
+      { name:'Plank + cable crunch',    focus:'Core · Anti-extension',          type:'Core',      sets:'3', reps:'45s / 15', rest:'60s' },
+    ],
+    tips: [
+      'Lat pulldown: chest up, pull elbows to hips — avoid hunching shoulders',
+      'Rows: squeeze shoulder blades together at the top of each rep',
+      'Add 2.5kg every 2 sessions when you hit the top of the rep range',
+    ],
+  },
+  {
+    id: 'upper',
+    name: 'Upper Body',
+    emoji: '🆙',
+    color: 'blue',
+    badge: 'Strength · Upper',
+    meta: 'Chest · Back · Shoulders · Arms  |  ~50 min',
+    exercises: [
+      { name:'Bench press',            focus:'Compound · Chest',            type:'Primary',   sets:'4', reps:'8–10',  rest:'90s' },
+      { name:'Bent-over barbell row',  focus:'Compound · Back thickness',   type:'Primary',   sets:'4', reps:'8–10',  rest:'90s' },
+      { name:'Overhead press',         focus:'Shoulders · Standing',        type:'Secondary', sets:'3', reps:'10–12', rest:'75s' },
+      { name:'Lat pulldown',           focus:'Lat width',                   type:'Secondary', sets:'3', reps:'10–12', rest:'75s' },
+      { name:'Bicep curl',             focus:'Biceps · Dumbbell or barbell',type:'Isolation', sets:'3', reps:'12',    rest:'60s' },
+      { name:'Tricep pushdown',        focus:'Cable · Triceps',             type:'Isolation', sets:'3', reps:'12',    rest:'60s' },
+    ],
+    tips: [
+      'Great choice when you only have time for 1–2 gym sessions a week',
+      'Alternate pushing and pulling supersets to save time',
+    ],
+  },
+  {
+    id: 'lower',
+    name: 'Lower Body',
+    emoji: '⬇️',
+    color: 'amber',
+    badge: 'Strength · Lower',
+    meta: 'Quads · Hamstrings · Glutes · Calves  |  ~50 min',
+    exercises: [
+      { name:'Back squat',         focus:'Compound · Quad / Glute',         type:'Primary',   sets:'4', reps:'8–10',    rest:'120s' },
+      { name:'Romanian deadlift',  focus:'Hamstrings · Glutes',             type:'Primary',   sets:'3', reps:'10–12',   rest:'90s' },
+      { name:'Hip thrust',         focus:'Glute isolation',                 type:'Secondary', sets:'3', reps:'12',      rest:'75s' },
+      { name:'Bulgarian split squat', focus:'Unilateral · Single-leg strength', type:'Secondary', sets:'3', reps:'10 each', rest:'75s' },
+      { name:'Leg curl',           focus:'Hamstring · Machine',             type:'Isolation', sets:'3', reps:'12–15',   rest:'60s' },
+      { name:'Calf raises',        focus:'Calves · Full ROM',               type:'Isolation', sets:'4', reps:'15–20',   rest:'60s' },
+    ],
+    tips: [
+      'Always warm up the hips before squatting heavy',
+      'Hip thrusts are the highest-ROI glute exercise — do not skip',
+    ],
+  },
+  {
+    id: 'fullbody',
+    name: 'Full Body',
+    emoji: '🌟',
+    color: 'coral',
+    badge: 'Strength · Full Body',
+    meta: 'Compound focus  |  ~50 min',
+    exercises: [
+      { name:'Goblet squat',           focus:'Quads · Core',                type:'Primary',   sets:'4', reps:'10',    rest:'75s' },
+      { name:'Dumbbell bench press',   focus:'Chest · Shoulders',           type:'Primary',   sets:'3', reps:'10–12', rest:'75s' },
+      { name:'Single-arm row',         focus:'Back · Unilateral',           type:'Primary',   sets:'3', reps:'10 each', rest:'75s' },
+      { name:'Romanian deadlift',      focus:'Posterior chain',             type:'Secondary', sets:'3', reps:'10–12', rest:'75s' },
+      { name:'Plank + bird dog',       focus:'Core · Stability',            type:'Core',      sets:'3', reps:'45s',   rest:'45s' },
+    ],
+    tips: [
+      'Perfect for short sessions — hits everything in 45 minutes',
+      'Pair with a 10 min cardio finisher if energy allows',
+    ],
+  },
+  {
+    id: 'glutes',
+    name: 'Glutes',
+    emoji: '🍑',
+    color: 'purple',
+    badge: 'Strength · Glutes',
+    meta: 'Glute focus + posterior chain  |  ~45 min',
+    exercises: [
+      { name:'Hip thrust',             focus:'Compound · Glute max',        type:'Primary',   sets:'4', reps:'8–10',  rest:'90s' },
+      { name:'Romanian deadlift',      focus:'Hamstrings · Glutes',         type:'Primary',   sets:'3', reps:'10–12', rest:'75s' },
+      { name:'Cable kickbacks',        focus:'Glute med · Glute max',       type:'Isolation', sets:'3', reps:'12 each', rest:'60s' },
+      { name:'Bulgarian split squat',  focus:'Unilateral · Glute',          type:'Secondary', sets:'3', reps:'10 each', rest:'75s' },
+      { name:'Banded glute bridge',    focus:'Glute medius',                type:'Isolation', sets:'3', reps:'15',    rest:'45s' },
+    ],
+    tips: [
+      'Mind-muscle connection matters more than load on glute work',
+      'Pause at the top of every hip thrust rep for 1 second',
+    ],
+  },
+  {
+    id: 'core',
+    name: 'Core',
+    emoji: '🧘',
+    color: 'blue',
+    badge: 'Strength · Core',
+    meta: 'Anti-rotation + stability  |  ~25 min',
+    exercises: [
+      { name:'Plank',                  focus:'Anti-extension',              type:'Core', sets:'3', reps:'45–60s', rest:'45s' },
+      { name:'Pallof press',           focus:'Anti-rotation · Cable',       type:'Core', sets:'3', reps:'10 each', rest:'45s' },
+      { name:'Hanging leg raises',     focus:'Lower abs · Hip flexors',     type:'Core', sets:'3', reps:'10–12',  rest:'60s' },
+      { name:'Cable crunch',           focus:'Upper abs',                   type:'Core', sets:'3', reps:'15',     rest:'45s' },
+      { name:'Side plank',             focus:'Obliques',                    type:'Core', sets:'2', reps:'30s each', rest:'30s' },
+    ],
+    tips: [
+      'Perfect 25 min add-on after legs or as a standalone short session',
+      'Quality over quantity — slow and controlled beats fast and sloppy',
+    ],
+  },
+  {
+    id: 'arms',
+    name: 'Arms',
+    emoji: '💪',
+    color: 'amber',
+    badge: 'Strength · Arms',
+    meta: 'Biceps + Triceps focus  |  ~35 min',
+    exercises: [
+      { name:'Barbell bicep curl',     focus:'Biceps peak',                 type:'Primary',   sets:'4', reps:'8–10',  rest:'75s' },
+      { name:'Close-grip bench press', focus:'Triceps · Compound',          type:'Primary',   sets:'4', reps:'8–10',  rest:'75s' },
+      { name:'Hammer curl',            focus:'Brachialis · Forearms',       type:'Secondary', sets:'3', reps:'10–12', rest:'60s' },
+      { name:'Tricep dips',            focus:'Triceps · Bodyweight',        type:'Secondary', sets:'3', reps:'10–12', rest:'60s' },
+      { name:'Cable curl',             focus:'Biceps · Constant tension',   type:'Isolation', sets:'3', reps:'12',    rest:'45s' },
+      { name:'Rope pushdown',          focus:'Tricep long head',            type:'Isolation', sets:'3', reps:'12',    rest:'45s' },
+    ],
+    tips: [
+      'Great as a 30-min finisher after Push or Pull',
+      'Slow eccentric on every rep — that is where the growth lives',
+    ],
+  },
+];
+
+const CUSTOM_GYM_WORKOUTS_KEY = 'customGymWorkouts';
+
+function getCustomGymWorkouts() { return getData(CUSTOM_GYM_WORKOUTS_KEY, []); }
+function setCustomGymWorkouts(arr) { setData(CUSTOM_GYM_WORKOUTS_KEY, arr); scheduleSave && scheduleSave(); }
+
+function getAllGymWorkouts() {
+  return BUILTIN_GYM_WORKOUTS.concat(getCustomGymWorkouts());
+}
+
+function escapeHtml(str) {
+  return String(str || '').replace(/[&<>"']/g, function(c) {
+    return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+  });
+}
+
+function renderGymWorkouts() {
+  var container = document.getElementById('gym-workouts-list');
+  if (!container) return;
+  var all = getAllGymWorkouts();
+  // Sort alphabetically by name
+  all = all.slice().sort(function(a,b) { return a.name.localeCompare(b.name); });
+  container.innerHTML = '';
+
+  all.forEach(function(w) {
+    var card = document.createElement('div');
+    card.className = 'card';
+    card.style.marginBottom = '16px';
+
+    var isCustom = !!w.custom;
+    var badgeColor = w.color || 'teal';
+
+    var html = '';
+    html += '<div class="workout-header" style="display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;">';
+    html += '<span class="badge badge-' + escapeHtml(badgeColor) + '">' + escapeHtml(w.emoji || '💪') + ' ' + escapeHtml(w.badge || w.name) + '</span>';
+    html += '<div style="flex:1;min-width:0;"><div class="workout-title">' + escapeHtml(w.name) + '</div>';
+    html += '<div class="workout-meta">' + escapeHtml(w.meta || '') + '</div></div>';
+    if (isCustom) {
+      html += '<button onclick="deleteCustomGymWorkout(\'' + escapeHtml(w.id) + '\')" style="background:var(--red-light);color:var(--red);border:none;border-radius:6px;width:32px;height:32px;cursor:pointer;font-size:16px;font-weight:600;flex-shrink:0;" title="Delete workout">✕</button>';
+    }
+    html += '</div>';
+
+    if (w.exercises && w.exercises.length) {
+      html += '<table class="ex-table"><thead><tr><th>Exercise</th><th>Type</th><th>Sets</th><th>Reps</th><th>Rest</th></tr></thead><tbody>';
+      w.exercises.forEach(function(ex) {
+        var typeColor = 'teal';
+        var t = (ex.type || '').toLowerCase();
+        if (t.indexOf('secondary') >= 0) typeColor = 'blue';
+        else if (t.indexOf('isolation') >= 0) typeColor = 'amber';
+        else if (t.indexOf('accessory') >= 0) typeColor = 'blue';
+        else if (t.indexOf('core') >= 0) typeColor = 'amber';
+        html += '<tr><td><div class="ex-name-cell">' + escapeHtml(ex.name) + '</div><div class="ex-focus">' + escapeHtml(ex.focus || '') + '</div></td>';
+        html += '<td><span class="badge badge-' + typeColor + '">' + escapeHtml(ex.type || '') + '</span></td>';
+        html += '<td><span class="pill-sm pill-sets">' + escapeHtml(ex.sets || '') + '</span></td>';
+        html += '<td><span class="pill-sm pill-reps">' + escapeHtml(ex.reps || '') + '</span></td>';
+        html += '<td><span class="pill-sm pill-rest">' + escapeHtml(ex.rest || '') + '</span></td></tr>';
+      });
+      html += '</tbody></table>';
+    }
+
+    if (w.tips && w.tips.length) {
+      html += '<div class="tip-box-f" style="margin-top:16px;"><div class="tip-box-title">Tips</div>';
+      w.tips.forEach(function(tip) {
+        html += '<div class="tip-item"><span class="tip-dot-f"></span>' + escapeHtml(tip) + '</div>';
+      });
+      html += '</div>';
+    }
+
+    card.innerHTML = html;
+    container.appendChild(card);
+  });
+
+  if (all.length === 0) {
+    container.innerHTML = '<div style="text-align:center;color:var(--text3);padding:40px 20px;font-size:14px;">No gym workouts yet. Add one to get started!</div>';
+  }
+}
+
+// Add Custom Workout — modal helpers
+function openAddGymWorkoutModal() {
+  document.getElementById('add-gym-workout-modal').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  document.getElementById('newGymWorkoutName').value = '';
+  document.getElementById('newGymWorkoutMeta').value = '';
+  document.getElementById('newGymWorkoutExercises').value = '';
+  document.getElementById('newGymWorkoutTips').value = '';
+}
+
+function closeAddGymWorkoutModal() {
+  document.getElementById('add-gym-workout-modal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function saveCustomGymWorkout() {
+  var name = document.getElementById('newGymWorkoutName').value.trim();
+  var meta = document.getElementById('newGymWorkoutMeta').value.trim();
+  var exercisesText = document.getElementById('newGymWorkoutExercises').value.trim();
+  var tipsText = document.getElementById('newGymWorkoutTips').value.trim();
+
+  if (!name) {
+    alert('Please give your workout a name');
+    return;
+  }
+
+  var exercises = exercisesText.split('\n').map(function(line) {
+    var parts = line.split('|').map(function(p) { return p.trim(); });
+    if (!parts[0]) return null;
+    return {
+      name:  parts[0] || '',
+      focus: parts[1] || '',
+      type:  parts[2] || 'Primary',
+      sets:  parts[3] || '3',
+      reps:  parts[4] || '10',
+      rest:  parts[5] || '60s',
+    };
+  }).filter(Boolean);
+
+  var tips = tipsText.split('\n').map(function(s) { return s.trim(); }).filter(Boolean);
+
+  var newWorkout = {
+    id: 'custom_' + Date.now(),
+    name: name,
+    emoji: '⭐',
+    color: 'teal',
+    badge: 'Custom · ' + name,
+    meta: meta,
+    exercises: exercises,
+    tips: tips,
+    custom: true,
+  };
+
+  var customs = getCustomGymWorkouts();
+  customs.push(newWorkout);
+  setCustomGymWorkouts(customs);
+  closeAddGymWorkoutModal();
+  renderGymWorkouts();
+}
+
+function deleteCustomGymWorkout(id) {
+  if (!confirm('Delete this custom workout?')) return;
+  var customs = getCustomGymWorkouts().filter(function(w) { return w.id !== id; });
+  setCustomGymWorkouts(customs);
+  renderGymWorkouts();
+}
+
+// Initial render
+setTimeout(renderGymWorkouts, 150);
 </script>
 
 </body>
