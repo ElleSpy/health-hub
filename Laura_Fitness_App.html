@@ -2754,7 +2754,10 @@ function goTo(page, el) {
   if (page === 'progress') renderProgress();
   if (page === 'shop') { refreshPlannerShoppingList(); renderShoppingTickList(); }
   if (page === 'workouts') renderGymWorkouts();
-  if (page === 'runningplans') updateRunningPlansSyncStatus();
+  if (page === 'runningplans') {
+    if (typeof renderRunningPlans === 'function') renderRunningPlans();
+    updateRunningPlansSyncStatus();
+  }
   if (page === 'settings') updateApiKeyStatus();
   if (page === 'classes') CLASS_WORKOUTS.forEach(w => renderClassTimesManager(w));
   if (window.innerWidth <= 900) closeSidebar();
@@ -2843,6 +2846,10 @@ function launchApp() {
   renderLongevityChecks();
   renderPlanner();
   renderSuppStack();
+  // Re-render data-driven views so they pick up data loaded from Drive
+  if (typeof renderRunningPlans === 'function') renderRunningPlans();
+  if (typeof renderGymWorkouts === 'function') renderGymWorkouts();
+  if (typeof renderShoppingTickList === 'function') renderShoppingTickList();
   setSyncStatus('ok', 'Synced');
 }
 
