@@ -5151,8 +5151,8 @@ document.addEventListener('drop', function(e) {
   }
 });
 
-// Initialize workout routine on page load
-renderDayCards();
+// Initialize workout routine on page load - defer until all scripts have parsed
+setTimeout(function() { renderDayCards(); }, 0);
 
 // ===================== RUNNING PLANS =====================
 const RUNNING_PLANS_KEY = 'runningPlans';
@@ -5871,9 +5871,9 @@ async function restoreLocalBackup() {
 // WELLBEING TOOLS
 // ============================================================
 
-const WT_KEY = 'laura_wellbeing_tools_v1';
+var WT_KEY = 'laura_wellbeing_tools_v1';
 
-const WT_CAT_META = {
+var WT_CAT_META = {
   recovery:   { color:'teal',   label:'Recovery'      },
   skin:       { color:'coral',  label:'Skin & Beauty' },
   metabolism: { color:'amber',  label:'Metabolism'    },
@@ -5884,7 +5884,7 @@ const WT_CAT_META = {
   general:    { color:'gray',   label:'General'       },
 };
 
-const DEFAULT_WELLBEING_TOOLS = [
+var DEFAULT_WELLBEING_TOOLS = [
   {
     id:'wt1', name:'Solis Red Light Lamp',
     when:'10–20 min, morning — face, neck or targeted area',
@@ -5912,7 +5912,8 @@ const DEFAULT_WELLBEING_TOOLS = [
 ];
 
 function loadWellbeingTools() {
-  return getData(WT_KEY, JSON.parse(JSON.stringify(DEFAULT_WELLBEING_TOOLS)));
+  var def = (typeof DEFAULT_WELLBEING_TOOLS !== 'undefined') ? JSON.parse(JSON.stringify(DEFAULT_WELLBEING_TOOLS)) : [];
+  return getData(WT_KEY, def);
 }
 function saveWellbeingTools(tools) { setData(WT_KEY, tools); scheduleSave(); }
 
@@ -6026,7 +6027,8 @@ var DEFAULT_ROUTINE_ITEMS = [
 ];
 
 function loadRoutineItems() {
-  return getData(ROUTINE_ITEMS_KEY, JSON.parse(JSON.stringify(DEFAULT_ROUTINE_ITEMS)));
+  var def = (typeof DEFAULT_ROUTINE_ITEMS !== 'undefined') ? JSON.parse(JSON.stringify(DEFAULT_ROUTINE_ITEMS)) : [];
+  return getData(ROUTINE_ITEMS_KEY, def);
 }
 function saveRoutineItems(items) { setData(ROUTINE_ITEMS_KEY, items); scheduleSave(); }
 
@@ -6263,6 +6265,9 @@ var WORKOUT_TIPS = {
 function getWorkoutTips(workoutTypes) {
   if (!workoutTypes || !workoutTypes.length) {
     return { am: 'Standard mobility flow', pm: 'Light stretch & wind-down' };
+  }
+  if (typeof WORKOUT_TIPS === 'undefined') {
+    return { am: 'Mobility prep', pm: 'Recovery stretch' };
   }
   var amParts = [], pmParts = [];
   workoutTypes.forEach(function(type) {
