@@ -603,6 +603,9 @@
     <button class="nav-item" onclick="goTo('supplements', this)">
       <span class="nav-icon">💊</span> Supplements
     </button>
+    <button class="nav-item" onclick="goTo('wellbeing-tools', this)">
+      <span class="nav-icon">🔴</span> Wellbeing Tools
+    </button>
   </div>
 
   <div class="nav-section">
@@ -2152,159 +2155,173 @@ function showCuisine(id, el) {
 <div id="page-routines" class="page">
   <div class="page-header">
     <div class="page-eyebrow">Wellbeing · Routines</div>
-    <div class="page-title">AM & PM routines</div>
-    <div class="page-sub">Simple daily bookends — nothing takes more than 15 minutes</div>
+    <div class="page-title">Daily Rituals</div>
+    <div class="page-sub">Your AM & PM routines — overview, live checklist, and day-specific workout tips</div>
   </div>
 
-  <div id="routines-main-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;">
+  <!-- Tab bar -->
+  <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;">
+    <button id="routines-tab-overview" onclick="routinesTab('overview')" style="padding:8px 20px;border-radius:999px;border:1.5px solid var(--text);background:var(--text);color:#fff;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;">Overview</button>
+    <button id="routines-tab-checklist" onclick="routinesTab('checklist')" style="padding:8px 20px;border-radius:999px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;">&#x2705; Today</button>
+    <button id="routines-tab-tweaks" onclick="routinesTab('tweaks')" style="padding:8px 20px;border-radius:999px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;">&#x1F4C5; By Day</button>
+  </div>
 
-    <!-- MORNING -->
-    <div>
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
-        <div style="font-size:22px;">🌅</div>
-        <div>
-          <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;">Morning routine</div>
-          <div style="font-size:12px;color:var(--text3);">~12 minutes · Before breakfast</div>
+  <!-- OVERVIEW TAB -->
+  <div id="routines-view-overview">
+    <div id="routines-main-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;">
+
+      <!-- MORNING -->
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+          <div style="font-size:22px;">&#x1F305;</div>
+          <div>
+            <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;">Morning routine</div>
+            <div style="font-size:12px;color:var(--text3);">~12 minutes &middot; Before breakfast</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;display:flex;gap:14px;align-items:flex-start;box-shadow:var(--shadow);">
+            <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);flex-shrink:0;padding-top:2px;min-width:28px;">01</div>
+            <div>
+              <div style="font-size:13.5px;font-weight:600;margin-bottom:3px;">Check your Whoop recovery</div>
+              <div style="font-size:12px;color:var(--text2);line-height:1.5;">Before you do anything else. Green, yellow or red determines today's training intensity. Takes 30 seconds.</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:4px;font-family:'DM Mono',monospace;">1 min</div>
+            </div>
+          </div>
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;display:flex;gap:14px;align-items:flex-start;box-shadow:var(--shadow);">
+            <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);flex-shrink:0;padding-top:2px;min-width:28px;">02</div>
+            <div>
+              <div style="font-size:13.5px;font-weight:600;margin-bottom:3px;">Hydrate immediately</div>
+              <div style="font-size:12px;color:var(--text2);line-height:1.5;">500ml water before coffee. You wake up mildly dehydrated every day &mdash; this alone improves energy, focus and reduces false hunger.</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:4px;font-family:'DM Mono',monospace;">1 min</div>
+            </div>
+          </div>
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;display:flex;gap:14px;align-items:flex-start;box-shadow:var(--shadow);">
+            <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);flex-shrink:0;padding-top:2px;min-width:28px;">03</div>
+            <div>
+              <div style="font-size:13.5px;font-weight:600;margin-bottom:3px;">5 min mobility flow</div>
+              <div style="font-size:12px;color:var(--text2);line-height:1.5;">Hip circles, thoracic rotations, neck rolls, shoulder rolls, cat-cow. On gym days this primes joints before lifting. On rest days it keeps you supple.</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:4px;font-family:'DM Mono',monospace;">5 min</div>
+            </div>
+          </div>
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;display:flex;gap:14px;align-items:flex-start;box-shadow:var(--shadow);">
+            <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);flex-shrink:0;padding-top:2px;min-width:28px;">04</div>
+            <div>
+              <div style="font-size:13.5px;font-weight:600;margin-bottom:3px;">Natural light exposure</div>
+              <div style="font-size:12px;color:var(--text2);line-height:1.5;">Step outside or sit by a window for 5&ndash;10 min. Anchors your circadian rhythm, improves cortisol curve, and makes falling asleep easier that night. Especially important on WFH days.</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:4px;font-family:'DM Mono',monospace;">5 min</div>
+            </div>
+          </div>
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;display:flex;gap:14px;align-items:flex-start;box-shadow:var(--shadow);">
+            <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);flex-shrink:0;padding-top:2px;min-width:28px;">05</div>
+            <div>
+              <div style="font-size:13.5px;font-weight:600;margin-bottom:3px;">Protein-first breakfast</div>
+              <div style="font-size:12px;color:var(--text2);line-height:1.5;">Whatever day type you're on &mdash; hit protein early. A high-protein breakfast reduces cravings for the rest of the day and stabilises blood sugar.</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:4px;font-family:'DM Mono',monospace;">See meal plan &rarr;</div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div style="display:flex;flex-direction:column;gap:8px;">
-        <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;display:flex;gap:14px;align-items:flex-start;box-shadow:var(--shadow);">
-          <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);flex-shrink:0;padding-top:2px;min-width:28px;">01</div>
+      <!-- EVENING -->
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+          <div style="font-size:22px;">&#x1F319;</div>
           <div>
-            <div style="font-size:13.5px;font-weight:600;margin-bottom:3px;">Check your Whoop recovery</div>
-            <div style="font-size:12px;color:var(--text2);line-height:1.5;">Before you do anything else. Green, yellow or red determines today's training intensity. Takes 30 seconds.</div>
-            <div style="font-size:11px;color:var(--text3);margin-top:4px;font-family:'DM Mono',monospace;">1 min</div>
+            <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;">Evening routine</div>
+            <div style="font-size:12px;color:var(--text3);">~15 minutes &middot; 60&ndash;90 min before bed</div>
           </div>
         </div>
-        <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;display:flex;gap:14px;align-items:flex-start;box-shadow:var(--shadow);">
-          <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);flex-shrink:0;padding-top:2px;min-width:28px;">02</div>
-          <div>
-            <div style="font-size:13.5px;font-weight:600;margin-bottom:3px;">Hydrate immediately</div>
-            <div style="font-size:12px;color:var(--text2);line-height:1.5;">500ml water before coffee. You wake up mildly dehydrated every day — this alone improves energy, focus and reduces false hunger.</div>
-            <div style="font-size:11px;color:var(--text3);margin-top:4px;font-family:'DM Mono',monospace;">1 min</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;display:flex;gap:14px;align-items:flex-start;box-shadow:var(--shadow);">
+            <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);flex-shrink:0;padding-top:2px;min-width:28px;">01</div>
+            <div>
+              <div style="font-size:13.5px;font-weight:600;margin-bottom:3px;">Prep tomorrow</div>
+              <div style="font-size:12px;color:var(--text2);line-height:1.5;">If it's a breakfast oats day, make overnight oats now. Batch-boil eggs if needed. Lay out your gym kit. Removes all friction from the morning.</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:4px;font-family:'DM Mono',monospace;">5 min</div>
+            </div>
           </div>
-        </div>
-        <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;display:flex;gap:14px;align-items:flex-start;box-shadow:var(--shadow);">
-          <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);flex-shrink:0;padding-top:2px;min-width:28px;">03</div>
-          <div>
-            <div style="font-size:13.5px;font-weight:600;margin-bottom:3px;">5 min mobility flow</div>
-            <div style="font-size:12px;color:var(--text2);line-height:1.5;">Hip circles, thoracic rotations, neck rolls, shoulder rolls, cat-cow. On gym days this primes joints before lifting. On rest days it keeps you supple.</div>
-            <div style="font-size:11px;color:var(--text3);margin-top:4px;font-family:'DM Mono',monospace;">5 min</div>
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;display:flex;gap:14px;align-items:flex-start;box-shadow:var(--shadow);">
+            <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);flex-shrink:0;padding-top:2px;min-width:28px;">02</div>
+            <div>
+              <div style="font-size:13.5px;font-weight:600;margin-bottom:3px;">10 min stretch or foam roll</div>
+              <div style="font-size:12px;color:var(--text2);line-height:1.5;">Focus on what's tight: after leg day &mdash; quads, hamstrings, calves. After push day &mdash; chest, pecs. After running &mdash; hip flexors, IT band. After Blaze &mdash; everything. Activates parasympathetic recovery.</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:4px;font-family:'DM Mono',monospace;">10 min</div>
+            </div>
           </div>
-        </div>
-        <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;display:flex;gap:14px;align-items:flex-start;box-shadow:var(--shadow);">
-          <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);flex-shrink:0;padding-top:2px;min-width:28px;">04</div>
-          <div>
-            <div style="font-size:13.5px;font-weight:600;margin-bottom:3px;">Natural light exposure</div>
-            <div style="font-size:12px;color:var(--text2);line-height:1.5;">Step outside or sit by a window for 5–10 min. Anchors your circadian rhythm, improves cortisol curve, and makes falling asleep easier that night. Especially important on WFH days.</div>
-            <div style="font-size:11px;color:var(--text3);margin-top:4px;font-family:'DM Mono',monospace;">5 min</div>
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;display:flex;gap:14px;align-items:flex-start;box-shadow:var(--shadow);">
+            <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);flex-shrink:0;padding-top:2px;min-width:28px;">03</div>
+            <div>
+              <div style="font-size:13.5px;font-weight:600;margin-bottom:3px;">Dim lights and screens</div>
+              <div style="font-size:12px;color:var(--text2);line-height:1.5;">Blue light suppresses melatonin for up to 2 hours. Switch to warm lighting, use night mode on your phone, or put it face-down. Your Whoop HRV will thank you within days.</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:4px;font-family:'DM Mono',monospace;">From 9pm onwards</div>
+            </div>
           </div>
-        </div>
-        <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;display:flex;gap:14px;align-items:flex-start;box-shadow:var(--shadow);">
-          <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);flex-shrink:0;padding-top:2px;min-width:28px;">05</div>
-          <div>
-            <div style="font-size:13.5px;font-weight:600;margin-bottom:3px;">Protein-first breakfast</div>
-            <div style="font-size:12px;color:var(--text2);line-height:1.5;">Whatever day type you're on — hit protein early. A high-protein breakfast reduces cravings for the rest of the day and stabilises blood sugar.</div>
-            <div style="font-size:11px;color:var(--text3);margin-top:4px;font-family:'DM Mono',monospace;">See meal plan →</div>
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;display:flex;gap:14px;align-items:flex-start;box-shadow:var(--shadow);">
+            <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);flex-shrink:0;padding-top:2px;min-width:28px;">04</div>
+            <div>
+              <div style="font-size:13.5px;font-weight:600;margin-bottom:3px;">Herbal tea (if needed)</div>
+              <div style="font-size:12px;color:var(--text2);line-height:1.5;">Peppermint, chamomile or valerian root tea. On early-finish days this replaces the urge to snack after 6pm. Valerian in particular supports deeper sleep and higher HRV.</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:4px;font-family:'DM Mono',monospace;">Optional</div>
+            </div>
+          </div>
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;display:flex;gap:14px;align-items:flex-start;box-shadow:var(--shadow);">
+            <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);flex-shrink:0;padding-top:2px;min-width:28px;">05</div>
+            <div>
+              <div style="font-size:13.5px;font-weight:600;margin-bottom:3px;">Cool, dark room for sleep</div>
+              <div style="font-size:12px;color:var(--text2);line-height:1.5;">18&ndash;19&deg;C is optimal for deep sleep. Blackout blinds or an eye mask meaningfully improve sleep quality. Aim for 7&ndash;9 hours &mdash; this is when fat metabolism and muscle repair actually occur.</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:4px;font-family:'DM Mono',monospace;">Every night</div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- EVENING -->
-    <div>
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
-        <div style="font-size:22px;">🌙</div>
-        <div>
-          <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;">Evening routine</div>
-          <div style="font-size:12px;color:var(--text3);">~15 minutes · 60–90 min before bed</div>
-        </div>
-      </div>
-
-      <div style="display:flex;flex-direction:column;gap:8px;">
-        <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;display:flex;gap:14px;align-items:flex-start;box-shadow:var(--shadow);">
-          <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);flex-shrink:0;padding-top:2px;min-width:28px;">01</div>
-          <div>
-            <div style="font-size:13.5px;font-weight:600;margin-bottom:3px;">Prep tomorrow</div>
-            <div style="font-size:12px;color:var(--text2);line-height:1.5;">If it's a breakfast oats day, make overnight oats now. Batch-boil eggs if needed. Lay out your gym kit. Removes all friction from the morning.</div>
-            <div style="font-size:11px;color:var(--text3);margin-top:4px;font-family:'DM Mono',monospace;">5 min</div>
-          </div>
-        </div>
-        <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;display:flex;gap:14px;align-items:flex-start;box-shadow:var(--shadow);">
-          <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);flex-shrink:0;padding-top:2px;min-width:28px;">02</div>
-          <div>
-            <div style="font-size:13.5px;font-weight:600;margin-bottom:3px;">10 min stretch or foam roll</div>
-            <div style="font-size:12px;color:var(--text2);line-height:1.5;">Focus on what's tight: after leg day — quads, hamstrings, calves. After push day — chest, pecs. After running — hip flexors, IT band. After Blaze — everything. Activates parasympathetic recovery.</div>
-            <div style="font-size:11px;color:var(--text3);margin-top:4px;font-family:'DM Mono',monospace;">10 min</div>
-          </div>
-        </div>
-        <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;display:flex;gap:14px;align-items:flex-start;box-shadow:var(--shadow);">
-          <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);flex-shrink:0;padding-top:2px;min-width:28px;">03</div>
-          <div>
-            <div style="font-size:13.5px;font-weight:600;margin-bottom:3px;">Dim lights and screens</div>
-            <div style="font-size:12px;color:var(--text2);line-height:1.5;">Blue light suppresses melatonin for up to 2 hours. Switch to warm lighting, use night mode on your phone, or put it face-down. Your Whoop HRV will thank you within days.</div>
-            <div style="font-size:11px;color:var(--text3);margin-top:4px;font-family:'DM Mono',monospace;">From 9pm onwards</div>
-          </div>
-        </div>
-        <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;display:flex;gap:14px;align-items:flex-start;box-shadow:var(--shadow);">
-          <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);flex-shrink:0;padding-top:2px;min-width:28px;">04</div>
-          <div>
-            <div style="font-size:13.5px;font-weight:600;margin-bottom:3px;">Herbal tea (if needed)</div>
-            <div style="font-size:12px;color:var(--text2);line-height:1.5;">Peppermint, chamomile or valerian root tea. On early-finish days this replaces the urge to snack after 6pm. Valerian in particular supports deeper sleep and higher HRV.</div>
-            <div style="font-size:11px;color:var(--text3);margin-top:4px;font-family:'DM Mono',monospace;">Optional</div>
-          </div>
-        </div>
-        <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;display:flex;gap:14px;align-items:flex-start;box-shadow:var(--shadow);">
-          <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);flex-shrink:0;padding-top:2px;min-width:28px;">05</div>
-          <div>
-            <div style="font-size:13.5px;font-weight:600;margin-bottom:3px;">Cool, dark room for sleep</div>
-            <div style="font-size:12px;color:var(--text2);line-height:1.5;">18–19°C is optimal for deep sleep. Blackout blinds or an eye mask meaningfully improve sleep quality. Aim for 7–9 hours — this is when fat metabolism and muscle repair actually occur.</div>
-            <div style="font-size:11px;color:var(--text3);margin-top:4px;font-family:'DM Mono',monospace;">Every night</div>
-          </div>
-        </div>
-      </div>
+    <div style="background:var(--teal-light);border:1px solid var(--teal-mid);border-radius:var(--radius-sm);padding:14px 18px;font-size:13px;color:var(--teal);">
+      &#x1F4A1; <strong>Use the Today tab</strong> to tick off your routine as you go &mdash; it resets each morning. Items are editable.
     </div>
   </div>
 
-  <!-- Day-specific tips -->
-  <div class="card">
-    <div class="card-title" style="margin-bottom:14px;">Routine tweaks by day</div>
-    <div class="ampm-routines-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;">
-      <div style="background:var(--teal-light);border-radius:var(--radius-sm);padding:10px 8px;text-align:center;">
-        <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--teal);font-family:'DM Mono',monospace;margin-bottom:4px;">Mon</div>
-        <div style="font-size:12px;font-weight:600;color:var(--teal);margin-bottom:5px;">Push</div>
-        <div style="font-size:11px;color:var(--text2);line-height:1.5;">AM: mobility — chest + shoulders<br>PM: chest & tricep stretch</div>
+  <!-- CHECKLIST (TODAY) TAB -->
+  <div id="routines-view-checklist" style="display:none;">
+    <div id="routines-checkin-grid" style="display:flex;flex-direction:column;gap:12px;"></div>
+  </div>
+
+  <!-- BY DAY TAB -->
+  <div id="routines-view-tweaks" style="display:none;">
+    <div class="card">
+      <div class="card-title" style="margin-bottom:6px;">Routine tweaks by day</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:16px;">Based on your current weekly plan &mdash; AM prep and PM recovery tips tailored to each workout.</div>
+      <div class="ampm-routines-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ROUTINE ITEM EDIT MODAL -->
+<div id="routine-item-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:1000;align-items:center;justify-content:center;">
+  <div style="background:var(--card);border-radius:var(--radius);padding:28px;max-width:500px;width:92%;max-height:85vh;overflow-y:auto;box-shadow:var(--shadow-lg);">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+      <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;" id="routine-item-modal-title">Edit routine item</div>
+      <button onclick="closeRoutineItemModal()" style="font-size:20px;background:none;border:none;cursor:pointer;color:var(--text3);line-height:1;">&#x2715;</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div>
+        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:6px;">Item name</div>
+        <input id="routine-item-name" type="text" placeholder="e.g. Cold shower, Journalling" style="width:100%;padding:10px 14px;border-radius:var(--radius-sm);border:1.5px solid var(--border);font-family:'DM Sans',sans-serif;font-size:14px;background:var(--bg);color:var(--text);outline:none;" onfocus="this.style.borderColor='var(--teal)'" onblur="this.style.borderColor='var(--border)'">
       </div>
-      <div style="background:var(--amber-light);border-radius:var(--radius-sm);padding:10px 8px;text-align:center;">
-        <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--amber);font-family:'DM Mono',monospace;margin-bottom:4px;">Tue</div>
-        <div style="font-size:12px;font-weight:600;color:var(--amber);margin-bottom:5px;">Cyclone 7am</div>
-        <div style="font-size:11px;color:var(--text2);line-height:1.5;">AM: banana before class, kit ready night before<br>PM: full leg foam roll</div>
+      <div>
+        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:6px;">Duration / note</div>
+        <input id="routine-item-duration" type="text" placeholder="e.g. 5 min, Optional" style="width:100%;padding:10px 14px;border-radius:var(--radius-sm);border:1.5px solid var(--border);font-family:'DM Sans',sans-serif;font-size:14px;background:var(--bg);color:var(--text);outline:none;" onfocus="this.style.borderColor='var(--teal)'" onblur="this.style.borderColor='var(--border)'">
       </div>
-      <div style="background:var(--blue-light);border-radius:var(--radius-sm);padding:10px 8px;text-align:center;">
-        <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--blue);font-family:'DM Mono',monospace;margin-bottom:4px;">Wed</div>
-        <div style="font-size:12px;font-weight:600;color:var(--blue);margin-bottom:5px;">Run</div>
-        <div style="font-size:11px;color:var(--text2);line-height:1.5;">AM: dynamic leg swings before heading out<br>PM: hip flexor + calf stretch</div>
+      <div>
+        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:6px;">Time of day</div>
+        <select id="routine-item-time" style="width:100%;padding:10px 14px;border-radius:var(--radius-sm);border:1.5px solid var(--border);font-family:'DM Sans',sans-serif;font-size:14px;background:var(--bg);color:var(--text);outline:none;">
+          <option value="am">Morning</option>
+          <option value="pm">Evening</option>
+        </select>
       </div>
-      <div style="background:var(--teal-light);border-radius:var(--radius-sm);padding:10px 8px;text-align:center;">
-        <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--teal);font-family:'DM Mono',monospace;margin-bottom:4px;">Thu</div>
-        <div style="font-size:12px;font-weight:600;color:var(--teal);margin-bottom:5px;">Legs + Run</div>
-        <div style="font-size:11px;color:var(--text2);line-height:1.5;">AM: hip & knee mobility before gym<br>Lunch: running kit by the door<br>PM: quad + hamstring foam roll</div>
-      </div>
-      <div style="background:var(--coral-light);border-radius:var(--radius-sm);padding:10px 8px;text-align:center;">
-        <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--coral);font-family:'DM Mono',monospace;margin-bottom:4px;">Fri</div>
-        <div style="font-size:12px;font-weight:600;color:var(--coral);margin-bottom:5px;">Blaze 7:20am</div>
-        <div style="font-size:11px;color:var(--text2);line-height:1.5;">AM: kit on, leave by 6:50am<br>PM: full body foam roll, early dinner</div>
-      </div>
-      <div style="background:var(--bg2);border-radius:var(--radius-sm);padding:10px 8px;text-align:center;">
-        <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text2);font-family:'DM Mono',monospace;margin-bottom:4px;">Sat</div>
-        <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:5px;">Rest</div>
-        <div style="font-size:11px;color:var(--text2);line-height:1.5;">AM: no alarm, relaxed start<br>PM: early bed — big week behind you</div>
-      </div>
-      <div style="background:var(--purple-light);border-radius:var(--radius-sm);padding:10px 8px;text-align:center;">
-        <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--purple);font-family:'DM Mono',monospace;margin-bottom:4px;">Sun</div>
-        <div style="font-size:12px;font-weight:600;color:var(--purple);margin-bottom:5px;">Pull + Run</div>
-        <div style="font-size:11px;color:var(--text2);line-height:1.5;">AM: breakfast before gym, check Whoop<br>PM: lat + bicep stretch, optional easy run</div>
+      <div style="display:flex;gap:10px;margin-top:6px;">
+        <button onclick="saveRoutineItemEdit()" style="flex:1;padding:12px;background:var(--teal);color:#fff;border:none;border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Save</button>
+        <button id="routine-item-delete-btn" onclick="deleteRoutineItem()" style="padding:12px 20px;background:var(--red-light);color:var(--red);border:none;border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Delete</button>
       </div>
     </div>
   </div>
@@ -2535,6 +2552,62 @@ function showCuisine(id, el) {
   </div>
 </div>
 
+
+<!-- ===================== WELLBEING TOOLS ===================== -->
+<div id="page-wellbeing-tools" class="page" style="padding-bottom:80px;">
+  <div class="page-header">
+    <div class="page-eyebrow">Wellbeing &middot; Tools &amp; Devices</div>
+    <div class="page-title">My Wellness Kit</div>
+    <div class="page-sub">Your biohacking toolkit &mdash; what each device does, when to use it, and why it works</div>
+  </div>
+
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+    <div style="font-size:13px;color:var(--text2);">Tap to edit &middot; <span style="color:var(--teal);font-weight:500;" id="wt-count"></span></div>
+    <button onclick="openAddWellbeingTool()" style="padding:7px 16px;border-radius:999px;border:1.5px solid var(--teal);background:var(--teal-light);color:var(--teal);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;">+ Add tool</button>
+  </div>
+  <div id="wt-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;"></div>
+</div>
+
+<!-- WELLBEING TOOL EDIT MODAL -->
+<div id="wt-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:1000;align-items:center;justify-content:center;">
+  <div style="background:var(--card);border-radius:var(--radius);padding:28px;max-width:540px;width:92%;max-height:85vh;overflow-y:auto;box-shadow:var(--shadow-lg);">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+      <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;" id="wt-modal-title">Edit tool</div>
+      <button onclick="closeWtModal()" style="font-size:20px;background:none;border:none;cursor:pointer;color:var(--text3);line-height:1;">&#x2715;</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div>
+        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:6px;">Device / tool name</div>
+        <input id="wt-edit-name" type="text" placeholder="e.g. Solis Red Light Lamp" style="width:100%;padding:10px 14px;border-radius:var(--radius-sm);border:1.5px solid var(--border);font-family:'DM Sans',sans-serif;font-size:14px;background:var(--bg);color:var(--text);outline:none;" onfocus="this.style.borderColor='var(--teal)'" onblur="this.style.borderColor='var(--border)'">
+      </div>
+      <div>
+        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:6px;">When / how to use</div>
+        <input id="wt-edit-when" type="text" placeholder="e.g. 10 min, morning &mdash; face &amp; body" style="width:100%;padding:10px 14px;border-radius:var(--radius-sm);border:1.5px solid var(--border);font-family:'DM Sans',sans-serif;font-size:14px;background:var(--bg);color:var(--text);outline:none;" onfocus="this.style.borderColor='var(--teal)'" onblur="this.style.borderColor='var(--border)'">
+      </div>
+      <div>
+        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:6px;">Benefits</div>
+        <textarea id="wt-edit-benefits" rows="3" placeholder="e.g. Stimulates collagen, reduces inflammation, improves skin texture and recovery" style="width:100%;padding:10px 14px;border-radius:var(--radius-sm);border:1.5px solid var(--border);font-family:'DM Sans',sans-serif;font-size:14px;background:var(--bg);color:var(--text);outline:none;resize:vertical;" onfocus="this.style.borderColor='var(--teal)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+      </div>
+      <div>
+        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:6px;">Category</div>
+        <select id="wt-edit-cat" style="width:100%;padding:10px 14px;border-radius:var(--radius-sm);border:1.5px solid var(--border);font-family:'DM Sans',sans-serif;font-size:14px;background:var(--bg);color:var(--text);outline:none;">
+          <option value="recovery">Recovery</option>
+          <option value="skin">Skin &amp; Beauty</option>
+          <option value="metabolism">Metabolism</option>
+          <option value="sleep">Sleep</option>
+          <option value="breathwork">Breathwork</option>
+          <option value="heat">Heat Therapy</option>
+          <option value="light">Light Therapy</option>
+          <option value="general">General</option>
+        </select>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:6px;">
+        <button onclick="saveWtEdit()" style="flex:1;padding:12px;background:var(--teal);color:#fff;border:none;border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Save</button>
+        <button id="wt-delete-btn" onclick="deleteWtItem()" style="padding:12px 20px;background:var(--red-light);color:var(--red);border:none;border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- ===================== SETTINGS ===================== -->
 <div id="page-settings" class="page">
   <div class="page-header">
@@ -2760,6 +2833,8 @@ function goTo(page, el) {
   }
   if (page === 'settings') updateApiKeyStatus();
   if (page === 'classes') CLASS_WORKOUTS.forEach(w => renderClassTimesManager(w));
+  if (page === 'wellbeing-tools') { if (typeof renderWtGrid === 'function') renderWtGrid(); }
+  if (page === 'routines') { if (typeof routinesTab === 'function') routinesTab('overview'); }
   if (window.innerWidth <= 900) closeSidebar();
   // Scroll to the top of the page on every navigation
   try {
@@ -2846,6 +2921,7 @@ function launchApp() {
   renderLongevityChecks();
   renderPlanner();
   renderSuppStack();
+  if (typeof renderWtGrid === 'function') renderWtGrid();
   // Re-render data-driven views so they pick up data loaded from Drive
   if (typeof renderRunningPlans === 'function') renderRunningPlans();
   if (typeof renderGymWorkouts === 'function') renderGymWorkouts();
@@ -3897,6 +3973,8 @@ function renderRoutinesGrid() {
   });
 
   routineGrid.innerHTML = html;
+  // Also refresh the By Day tab if it's open
+  if (typeof renderRoutinesTweaks === 'function') renderRoutinesTweaks();
 }
 
 function selectDay(workoutType, cardEl) {
@@ -5785,6 +5863,465 @@ async function restoreLocalBackup() {
   if (typeof renderRunningPlans === 'function') renderRunningPlans();
   updateRunningPlansSyncStatus();
 }
+
+// ============================================================
+// WELLBEING TOOLS
+// ============================================================
+
+const WT_KEY = 'laura_wellbeing_tools_v1';
+
+const WT_CAT_META = {
+  recovery:   { color:'teal',   label:'Recovery'      },
+  skin:       { color:'coral',  label:'Skin & Beauty' },
+  metabolism: { color:'amber',  label:'Metabolism'    },
+  sleep:      { color:'purple', label:'Sleep'         },
+  breathwork: { color:'blue',   label:'Breathwork'    },
+  heat:       { color:'coral',  label:'Heat Therapy'  },
+  light:      { color:'amber',  label:'Light Therapy' },
+  general:    { color:'gray',   label:'General'       },
+};
+
+const DEFAULT_WELLBEING_TOOLS = [
+  {
+    id:'wt1', name:'Solis Red Light Lamp',
+    when:'10–20 min, morning — face, neck or targeted area',
+    benefits:'Stimulates collagen production and cellular repair via photobiomodulation. Reduces inflammation, improves skin texture, accelerates muscle recovery and wound healing. Red light (660nm) works on the surface; near-infrared (850nm) penetrates deep tissue. Use before or after workouts for recovery benefits.',
+    cat:'light', active:true
+  },
+  {
+    id:'wt2', name:'Therabody Mask Glo',
+    when:'10 min — clean, dry skin. Can be used while winding down',
+    benefits:'LED light therapy combining red (anti-ageing, collagen), near-infrared (deep healing) and optional blue (acne-fighting) wavelengths. Clinical grade output in a hands-free mask. Pairs well with serums — apply skincare immediately after for enhanced absorption. Consistent use over 8–12 weeks shows measurable improvement in fine lines, tone and firmness.',
+    cat:'skin', active:true
+  },
+  {
+    id:'wt3', name:'Lumen',
+    when:'First thing in the morning before eating or exercising',
+    benefits:'Measures your metabolic flexibility by analysing CO2 in a single breath. Tells you whether your body is burning fat or carbs as its primary fuel. Guides your daily nutrition — how many carbs to eat and when — based on your actual metabolic state, not generic macros. Pairs directly with your fitness goals and recovery.',
+    cat:'metabolism', active:true
+  },
+  {
+    id:'wt4', name:'MiHigh Sauna Blanket',
+    when:'30–45 min session, 2–3x per week. Avoid within 2 hrs of bedtime',
+    benefits:'Far-infrared heat penetrates 3–4cm into tissue, raising core temperature without the humidity of a traditional sauna. Promotes cardiovascular adaptation (similar to moderate cardio), deep sweating for detoxification, muscle relaxation and recovery. Regular use linked to reduced all-cause mortality in longitudinal studies. Rehydrate with electrolytes immediately after.',
+    cat:'heat', active:true
+  },
+];
+
+function loadWellbeingTools() {
+  return getData(WT_KEY, JSON.parse(JSON.stringify(DEFAULT_WELLBEING_TOOLS)));
+}
+function saveWellbeingTools(tools) { setData(WT_KEY, tools); scheduleSave(); }
+
+function renderWtGrid() {
+  var tools = loadWellbeingTools();
+  var grid  = document.getElementById('wt-grid');
+  var count = document.getElementById('wt-count');
+  if (!grid) return;
+  if (count) count.textContent = tools.length + ' item' + (tools.length !== 1 ? 's' : '');
+  grid.innerHTML = '';
+
+  tools.forEach(function(t, i) {
+    var meta = WT_CAT_META[t.cat] || WT_CAT_META.general;
+    var cm   = COLOR_MAP[meta.color] || COLOR_MAP.gray;
+
+    var card = document.createElement('div');
+    card.style.cssText = 'background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);cursor:pointer;transition:box-shadow 0.15s,border-color 0.15s;';
+
+    card.innerHTML =
+      '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">' +
+        '<div style="flex:1;min-width:0;">' +
+          '<div style="font-family:\'Playfair Display\',serif;font-size:17px;font-weight:700;">' + t.name + '</div>' +
+        '</div>' +
+        '<span style="font-size:11px;font-weight:600;padding:3px 10px;border-radius:999px;background:' + cm.bg + ';color:' + cm.text + ';margin-left:8px;flex-shrink:0;">' + meta.label + '</span>' +
+      '</div>' +
+      '<div style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;color:var(--text3);font-family:\'DM Mono\',monospace;margin-bottom:5px;">&#x23F0; ' + (t.when || '') + '</div>' +
+      '<div style="font-size:13px;color:var(--text2);line-height:1.6;">' + (t.benefits || '') + '</div>' +
+      '<div style="margin-top:12px;font-size:12px;color:var(--teal);font-weight:500;">&#x270F;&#xFE0F; Tap card to edit</div>';
+
+    card.addEventListener('mouseenter', function() { card.style.boxShadow = 'var(--shadow-lg)'; card.style.borderColor = 'var(--teal)'; });
+    card.addEventListener('mouseleave', function() { card.style.boxShadow = 'var(--shadow)'; card.style.borderColor = 'var(--border)'; });
+    card.addEventListener('click', function() { openWtEdit(i); });
+    grid.appendChild(card);
+  });
+}
+
+var wtEditIndex = -1;
+
+function openAddWellbeingTool() { openWtEdit(-1); }
+
+function openWtEdit(index) {
+  var tools = loadWellbeingTools();
+  wtEditIndex = index;
+  var isNew = index === -1;
+  var t = isNew ? { name:'', when:'', benefits:'', cat:'general' } : tools[index];
+  document.getElementById('wt-modal-title').textContent = isNew ? 'Add tool' : 'Edit tool';
+  document.getElementById('wt-edit-name').value     = t.name || '';
+  document.getElementById('wt-edit-when').value     = t.when || '';
+  document.getElementById('wt-edit-benefits').value = t.benefits || '';
+  document.getElementById('wt-edit-cat').value      = t.cat || 'general';
+  document.getElementById('wt-delete-btn').style.display = isNew ? 'none' : 'block';
+  document.getElementById('wt-modal').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function saveWtEdit() {
+  var tools = loadWellbeingTools();
+  var item = {
+    id: wtEditIndex === -1 ? ('wt' + Date.now()) : (tools[wtEditIndex].id || 'wt' + Date.now()),
+    name:     document.getElementById('wt-edit-name').value.trim(),
+    when:     document.getElementById('wt-edit-when').value.trim(),
+    benefits: document.getElementById('wt-edit-benefits').value.trim(),
+    cat:      document.getElementById('wt-edit-cat').value,
+    active:   true,
+  };
+  if (!item.name) { alert('Please enter a name.'); return; }
+  if (wtEditIndex === -1) {
+    tools.push(item);
+  } else {
+    tools[wtEditIndex] = item;
+  }
+  saveWellbeingTools(tools);
+  closeWtModal();
+  renderWtGrid();
+}
+
+function deleteWtItem() {
+  if (!confirm('Remove this tool?')) return;
+  var tools = loadWellbeingTools();
+  tools.splice(wtEditIndex, 1);
+  saveWellbeingTools(tools);
+  closeWtModal();
+  renderWtGrid();
+}
+
+function closeWtModal() {
+  document.getElementById('wt-modal').style.display = 'none';
+  document.body.style.overflow = '';
+  wtEditIndex = -1;
+}
+document.getElementById('wt-modal').addEventListener('click', function(e) { if (e.target === this) closeWtModal(); });
+
+// ============================================================
+// ROUTINES CHECKLIST + TABS
+// ============================================================
+
+var ROUTINE_ITEMS_KEY    = 'laura_routine_items_v1';
+var ROUTINE_CHECKIN_KEY  = 'laura_routine_checkin_v1';
+
+var DEFAULT_ROUTINE_ITEMS = [
+  { id:'r1',  name:'Check Whoop recovery',   duration:'1 min',          time:'am' },
+  { id:'r2',  name:'500ml water',            duration:'1 min',          time:'am' },
+  { id:'r3',  name:'5 min mobility flow',    duration:'5 min',          time:'am' },
+  { id:'r4',  name:'Natural light exposure', duration:'5 min',          time:'am' },
+  { id:'r5',  name:'Protein-first breakfast',duration:'See meal plan',  time:'am' },
+  { id:'r6',  name:'Prep tomorrow',          duration:'5 min',          time:'pm' },
+  { id:'r7',  name:'Stretch or foam roll',   duration:'10 min',         time:'pm' },
+  { id:'r8',  name:'Dim lights & screens',   duration:'From 9pm',       time:'pm' },
+  { id:'r9',  name:'Herbal tea',             duration:'Optional',       time:'pm' },
+  { id:'r10', name:'Cool, dark room',        duration:'Every night',    time:'pm' },
+];
+
+function loadRoutineItems() {
+  return getData(ROUTINE_ITEMS_KEY, JSON.parse(JSON.stringify(DEFAULT_ROUTINE_ITEMS)));
+}
+function saveRoutineItems(items) { setData(ROUTINE_ITEMS_KEY, items); scheduleSave(); }
+
+function loadRoutineCheckin() {
+  var all = getData(ROUTINE_CHECKIN_KEY, {});
+  return all[getTodayKey()] || {};
+}
+function saveRoutineCheckin(state) {
+  var allDays = getData(ROUTINE_CHECKIN_KEY, {});
+  allDays[getTodayKey()] = state;
+  setData(ROUTINE_CHECKIN_KEY, allDays);
+  scheduleSave();
+}
+
+function toggleRoutineCheckin(itemId) {
+  var state = loadRoutineCheckin();
+  state[itemId] = !state[itemId];
+  saveRoutineCheckin(state);
+  renderRoutinesChecklist();
+}
+
+function routinesTab(which) {
+  ['overview','checklist','tweaks'].forEach(function(v) {
+    var view = document.getElementById('routines-view-' + v);
+    var btn  = document.getElementById('routines-tab-' + v);
+    if (!view || !btn) return;
+    var active = (v === which);
+    view.style.display    = active ? 'block' : 'none';
+    btn.style.background  = active ? 'var(--text)' : 'var(--card)';
+    btn.style.color       = active ? '#fff' : 'var(--text2)';
+    btn.style.borderColor = active ? 'var(--text)' : 'var(--border)';
+  });
+  if (which === 'checklist') renderRoutinesChecklist();
+  if (which === 'tweaks')    renderRoutinesTweaks();
+}
+
+function renderRoutinesChecklist() {
+  var grid    = document.getElementById('routines-checkin-grid');
+  if (!grid) return;
+  var items   = loadRoutineItems();
+  var checked = loadRoutineCheckin();
+  var today   = new Date().toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'long' });
+  var total   = items.length;
+  var done    = items.filter(function(it) { return checked[it.id]; }).length;
+  grid.innerHTML = '';
+
+  // Summary card
+  var summary = document.createElement('div');
+  summary.style.cssText = 'background:var(--teal-light);border:1.5px solid var(--teal);border-radius:var(--radius);padding:20px 24px;display:flex;justify-content:space-between;align-items:center;';
+  summary.innerHTML =
+    '<div>' +
+      '<div style="font-family:\'Playfair Display\',serif;font-size:20px;font-weight:700;color:var(--teal);">Today\'s routine</div>' +
+      '<div style="font-size:13px;color:var(--text2);margin-top:4px;">' + today + '</div>' +
+    '</div>' +
+    '<div style="text-align:right;">' +
+      '<div style="font-size:36px;font-weight:700;font-family:\'DM Mono\',monospace;color:var(--teal);">' + done + '/' + total + '</div>' +
+      '<div style="font-size:12px;color:var(--text3);">' + (done === total ? '&#x1F389; All done!' : 'completed') + '</div>' +
+    '</div>';
+  grid.appendChild(summary);
+
+  // Progress bar
+  var pct = total ? Math.round((done/total)*100) : 0;
+  var barWrap = document.createElement('div');
+  barWrap.style.cssText = 'background:var(--border);border-radius:999px;height:6px;overflow:hidden;';
+  barWrap.innerHTML = '<div style="height:100%;width:' + pct + '%;background:var(--teal);border-radius:999px;transition:width 0.3s;"></div>';
+  grid.appendChild(barWrap);
+
+  // AM block
+  var amItems = items.filter(function(it) { return it.time === 'am'; });
+  var pmItems = items.filter(function(it) { return it.time === 'pm'; });
+
+  function renderBlock(label, icon, blockItems) {
+    if (!blockItems.length) return;
+    var block = document.createElement('div');
+    block.style.cssText = 'background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);';
+    var doneCount = blockItems.filter(function(it){ return checked[it.id]; }).length;
+    block.innerHTML =
+      '<div style="padding:14px 20px;border-bottom:1px solid var(--border);background:var(--bg2);display:flex;justify-content:space-between;align-items:center;">' +
+        '<div style="display:flex;align-items:center;gap:10px;">' +
+          '<span style="font-size:20px;">' + icon + '</span>' +
+          '<div style="font-size:15px;font-weight:600;">' + label + '</div>' +
+        '</div>' +
+        '<div style="font-size:13px;color:' + (doneCount === blockItems.length ? 'var(--teal)' : 'var(--text3)') + ';">' +
+          (doneCount === blockItems.length ? '&#x2713; Done' : doneCount + '/' + blockItems.length) +
+        '</div>' +
+      '</div>';
+
+    var body = document.createElement('div');
+    body.style.cssText = 'padding:12px 16px;display:flex;flex-direction:column;gap:8px;';
+
+    blockItems.forEach(function(it) {
+      var isTaken = !!checked[it.id];
+      var row = document.createElement('label');
+      row.style.cssText = 'display:flex;align-items:center;gap:14px;padding:12px 16px;border-radius:var(--radius-sm);border:1.5px solid ' + (isTaken ? 'var(--teal)' : 'var(--border)') + ';background:' + (isTaken ? 'var(--teal-light)' : 'var(--bg)') + ';cursor:pointer;transition:all 0.15s;';
+      var cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.checked = isTaken;
+      cb.style.cssText = 'width:20px;height:20px;accent-color:var(--teal);cursor:pointer;flex-shrink:0;';
+      cb.setAttribute('onchange', "toggleRoutineCheckin('" + it.id + "')");
+      var info = document.createElement('div');
+      info.style.cssText = 'flex:1;';
+      info.innerHTML =
+        '<div style="font-size:14px;font-weight:600;' + (isTaken ? 'text-decoration:line-through;color:var(--text3);' : '') + '">' + it.name + '</div>' +
+        '<div style="font-size:12px;color:var(--text3);font-family:\'DM Mono\',monospace;margin-top:2px;">' + (it.duration || '') + '</div>';
+      var editBtn = document.createElement('button');
+      editBtn.textContent = '✏️';
+      editBtn.style.cssText = 'background:none;border:none;cursor:pointer;font-size:16px;padding:2px 4px;opacity:0.5;transition:opacity 0.15s;flex-shrink:0;';
+      editBtn.setAttribute('onclick', "event.preventDefault();openRoutineItemEdit('" + it.id + "')");
+      editBtn.addEventListener('mouseenter', function(){ editBtn.style.opacity='1'; });
+      editBtn.addEventListener('mouseleave', function(){ editBtn.style.opacity='0.5'; });
+      if (isTaken) {
+        var tick = document.createElement('span');
+        tick.style.fontSize = '18px';
+        tick.textContent = '✓';
+        row.appendChild(cb);
+        row.appendChild(info);
+        row.appendChild(tick);
+        row.appendChild(editBtn);
+      } else {
+        row.appendChild(cb);
+        row.appendChild(info);
+        row.appendChild(editBtn);
+      }
+      body.appendChild(row);
+    });
+
+    // Add item button
+    var addBtn = document.createElement('button');
+    addBtn.style.cssText = 'font-size:13px;font-weight:600;color:var(--teal);background:var(--teal-light);border:none;border-radius:var(--radius-sm);padding:10px 20px;cursor:pointer;font-family:"DM Sans",sans-serif;margin-top:4px;';
+    addBtn.textContent = '+ Add item';
+    addBtn.addEventListener('click', function() { openRoutineItemEdit(null, label === 'Morning' ? 'am' : 'pm'); });
+    body.appendChild(addBtn);
+
+    block.appendChild(body);
+    grid.appendChild(block);
+  }
+
+  renderBlock('Morning', '&#x1F305;', amItems);
+  renderBlock('Evening', '&#x1F319;', pmItems);
+
+  // Reset button
+  var resetWrap = document.createElement('div');
+  resetWrap.style.cssText = 'display:flex;justify-content:flex-end;';
+  var reset = document.createElement('button');
+  reset.style.cssText = 'font-size:12px;color:var(--text3);background:none;border:none;cursor:pointer;font-family:"DM Sans",sans-serif;padding:4px 0;';
+  reset.textContent = 'Reset today';
+  reset.onclick = function() { saveRoutineCheckin({}); renderRoutinesChecklist(); };
+  resetWrap.appendChild(reset);
+  grid.appendChild(resetWrap);
+}
+
+// Routine item edit
+var routineItemEditId = null;
+var routineItemEditDefaultTime = 'am';
+
+function openRoutineItemEdit(itemId, defaultTime) {
+  var items = loadRoutineItems();
+  routineItemEditId = itemId || null;
+  routineItemEditDefaultTime = defaultTime || 'am';
+  var isNew = !itemId;
+  var it = isNew ? { name:'', duration:'', time: routineItemEditDefaultTime } : items.find(function(x){ return x.id === itemId; });
+  if (!it) return;
+  document.getElementById('routine-item-modal-title').textContent = isNew ? 'Add routine item' : 'Edit routine item';
+  document.getElementById('routine-item-name').value     = it.name || '';
+  document.getElementById('routine-item-duration').value = it.duration || '';
+  document.getElementById('routine-item-time').value     = it.time || 'am';
+  document.getElementById('routine-item-delete-btn').style.display = isNew ? 'none' : 'block';
+  document.getElementById('routine-item-modal').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function saveRoutineItemEdit() {
+  var items = loadRoutineItems();
+  var isNew = !routineItemEditId;
+  var obj = {
+    id:       isNew ? ('r' + Date.now()) : routineItemEditId,
+    name:     document.getElementById('routine-item-name').value.trim(),
+    duration: document.getElementById('routine-item-duration').value.trim(),
+    time:     document.getElementById('routine-item-time').value,
+  };
+  if (!obj.name) { alert('Please enter a name.'); return; }
+  if (isNew) {
+    items.push(obj);
+  } else {
+    var idx = items.findIndex(function(x){ return x.id === routineItemEditId; });
+    if (idx > -1) items[idx] = obj;
+  }
+  saveRoutineItems(items);
+  closeRoutineItemModal();
+  renderRoutinesChecklist();
+}
+
+function deleteRoutineItem() {
+  if (!routineItemEditId) return;
+  if (!confirm('Remove this item?')) return;
+  var items = loadRoutineItems().filter(function(x){ return x.id !== routineItemEditId; });
+  saveRoutineItems(items);
+  closeRoutineItemModal();
+  renderRoutinesChecklist();
+}
+
+function closeRoutineItemModal() {
+  document.getElementById('routine-item-modal').style.display = 'none';
+  document.body.style.overflow = '';
+  routineItemEditId = null;
+}
+document.getElementById('routine-item-modal').addEventListener('click', function(e) { if (e.target === this) closeRoutineItemModal(); });
+
+// ============================================================
+// DYNAMIC ROUTINE TWEAKS BY DAY
+// ============================================================
+
+var WORKOUT_TIPS = {
+  push:         { am: 'Chest & shoulder mobility — band pull-aparts, arm circles, thoracic rotation', pm: 'Chest, tricep & front delt stretch — doorframe pec stretch, overhead tricep' },
+  pull:         { am: 'Scapular pull-ups, band face pulls, lat stretch before gym', pm: 'Lat, bicep & rear delt stretch — doorframe lat pull, cross-arm bicep stretch' },
+  legs:         { am: 'Hip & knee mobility — hip circles, bodyweight squats, leg swings', pm: 'Quad, hamstring & glute foam roll — 2 min per side' },
+  upper:        { am: 'Full upper body mobility — shoulder circles, chest opener, neck rolls', pm: 'Full upper stretch — pec, lat, bicep, tricep' },
+  lower:        { am: 'Hip flexor + glute activation — fire hydrants, clamshells, leg swings', pm: 'Quad, hamstring & calf foam roll — take your time' },
+  fullbody:     { am: 'Head-to-toe mobility flow — 5 min, no skipping', pm: 'Full body foam roll + static stretch — hips, chest, calves' },
+  glutes:       { am: 'Glute activation — banded clamshells, hip circles, donkey kicks', pm: 'Pigeon pose, figure-4 stretch, glute foam roll' },
+  core:         { am: 'Spinal mobility — cat-cow, child\'s pose, dead bug prep', pm: 'Hip flexor stretch + lower back release' },
+  arms:         { am: 'Wrist circles, elbow warm-up, shoulder rotation', pm: 'Bicep & tricep stretch, forearm release' },
+  cyclone:      { am: 'Banana or rice cake 30 min before class. Kit ready the night before', pm: 'Full leg foam roll — quads, hamstrings, IT band. Rehydrate' },
+  rhythm:       { am: 'Light snack 30 min before. Kit ready the night before', pm: 'Leg foam roll, calf stretch, rehydrate' },
+  interval_run: { am: 'Dynamic leg swings, high knees, ankle circles before heading out', pm: 'Hip flexor & calf stretch — 90 sec each side. IT band foam roll' },
+  long_run:     { am: 'Easy warm-up jog first 5 min, no static stretching before', pm: 'Full lower body — quads, hamstrings, hip flexors, calves. Epsom salt bath if possible' },
+  easy_run:     { am: 'Dynamic leg swings and hip circles — nothing intense', pm: 'Hip flexor + calf stretch, light foam roll if needed' },
+  runna:        { am: 'Follow Runna warm-up. Dynamic only before the run', pm: 'Runna cool-down stretches + foam roll focus areas' },
+  swim:         { am: 'Shoulder circles, neck rolls, ankle mobility before getting in', pm: 'Lat & shoulder stretch, chest opener' },
+  blaze:        { am: 'Kit on and out the door on time — pack bag tonight. Light snack if needed', pm: 'Full body foam roll, early dinner (high protein). Epsom bath if legs are heavy' },
+  rest:         { am: 'No alarm if possible. Gentle walk or movement is fine', pm: 'Early wind-down — aim for bed 30 min earlier to bank recovery' },
+};
+
+function getWorkoutTips(workoutTypes) {
+  if (!workoutTypes || !workoutTypes.length) {
+    return { am: 'Standard mobility flow', pm: 'Light stretch & wind-down' };
+  }
+  var amParts = [], pmParts = [];
+  workoutTypes.forEach(function(type) {
+    var tips = WORKOUT_TIPS[type];
+    if (tips) {
+      amParts.push(tips.am);
+      pmParts.push(tips.pm);
+    } else {
+      amParts.push('Mobility prep for ' + type);
+      pmParts.push('Recovery stretch after ' + type);
+    }
+  });
+  return {
+    am: amParts.join(' &bull; '),
+    pm: pmParts.join(' &bull; ')
+  };
+}
+
+function renderRoutinesTweaks() {
+  var grid = document.querySelector('#routines-view-tweaks .ampm-routines-grid');
+  if (!grid) return;
+  var routine = loadWorkoutRoutine();
+  var lib = getWorkoutLibrary();
+  var dayOrder  = ['mon','tue','wed','thu','fri','sat','sun'];
+  var dayLabels = { mon:'Mon', tue:'Tue', wed:'Wed', thu:'Thu', fri:'Fri', sat:'Sat', sun:'Sun' };
+
+  var routineByDay = {};
+  routine.forEach(function(day) { routineByDay[day.dayKey] = day; });
+
+  var html = '';
+  dayOrder.forEach(function(dayKey) {
+    var day = routineByDay[dayKey];
+    if (!day) return;
+
+    var workoutTypes = day.workoutTypes || [];
+    var firstType    = workoutTypes[0];
+    var firstWorkout = firstType ? lib[firstType] : null;
+    var color        = firstWorkout ? (firstWorkout.color || 'teal') : 'gray';
+
+    var combinedName = '';
+    workoutTypes.forEach(function(type, i) {
+      var w = lib[type];
+      if (w) { if (i > 0) combinedName += ' + '; combinedName += w.name; }
+    });
+
+    var tips = getWorkoutTips(workoutTypes);
+
+    html +=
+      '<div style="background:var(--' + color + '-light);border-radius:var(--radius-sm);padding:10px 8px;text-align:center;">' +
+        '<div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--' + color + ');font-family:\'DM Mono\',monospace;margin-bottom:4px;">' + dayLabels[dayKey] + '</div>' +
+        '<div style="font-size:12px;font-weight:600;color:var(--' + color + ');margin-bottom:5px;">' + (combinedName || 'Rest') + '</div>' +
+        '<div style="font-size:10.5px;color:var(--text2);line-height:1.5;text-align:left;">' +
+          '<strong style="font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:var(--text3);">AM</strong><br>' + tips.am +
+          '<br><br><strong style="font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:var(--text3);">PM</strong><br>' + tips.pm +
+        '</div>' +
+      '</div>';
+  });
+  grid.innerHTML = html;
+}
+
+// goTo hooks are wired directly into the goTo() function above
+
 </script>
 
 </body>
