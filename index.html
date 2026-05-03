@@ -2833,6 +2833,7 @@ function goTo(page, el) {
   }
   if (page === 'settings') updateApiKeyStatus();
   if (page === 'classes') CLASS_WORKOUTS.forEach(w => renderClassTimesManager(w));
+  if (page === 'supplements') { suppTab('stack'); }
   if (page === 'wellbeing-tools') { if (typeof renderWtGrid === 'function') renderWtGrid(); }
   if (page === 'routines') { if (typeof routinesTab === 'function') routinesTab('overview'); }
   if (window.innerWidth <= 900) closeSidebar();
@@ -2921,7 +2922,6 @@ function launchApp() {
   renderLongevityChecks();
   renderPlanner();
   renderSuppStack();
-  if (typeof renderWtGrid === 'function') renderWtGrid();
   // Re-render data-driven views so they pick up data loaded from Drive
   if (typeof renderRunningPlans === 'function') renderRunningPlans();
   if (typeof renderGymWorkouts === 'function') renderGymWorkouts();
@@ -5917,10 +5917,12 @@ function loadWellbeingTools() {
 function saveWellbeingTools(tools) { setData(WT_KEY, tools); scheduleSave(); }
 
 function renderWtGrid() {
+  try {
   var tools = loadWellbeingTools();
   var grid  = document.getElementById('wt-grid');
   var count = document.getElementById('wt-count');
-  if (!grid) return;
+  if (!grid) { console.error('renderWtGrid: wt-grid not found'); return; }
+  console.log('renderWtGrid: tools=', tools ? tools.length : 'null', 'grid=', !!grid);
   if (count) count.textContent = tools.length + ' item' + (tools.length !== 1 ? 's' : '');
   grid.innerHTML = '';
 
@@ -5947,6 +5949,7 @@ function renderWtGrid() {
     card.addEventListener('click', function() { openWtEdit(i); });
     grid.appendChild(card);
   });
+  } catch(e) { console.error('renderWtGrid ERROR:', e); }
 }
 
 var wtEditIndex = -1;
@@ -6039,6 +6042,7 @@ function saveRoutineCheckin(state) {
   allDays[getTodayKey()] = state;
   setData(ROUTINE_CHECKIN_KEY, allDays);
   scheduleSave();
+  } catch(e) { console.error('renderRoutinesChecklist ERROR:', e); }
 }
 
 function toggleRoutineCheckin(itemId) {
@@ -6064,8 +6068,10 @@ function routinesTab(which) {
 }
 
 function renderRoutinesChecklist() {
+  try {
   var grid    = document.getElementById('routines-checkin-grid');
-  if (!grid) return;
+  if (!grid) { console.error('renderRoutinesChecklist: grid not found'); return; }
+  console.log('renderRoutinesChecklist: starting');
   var items   = loadRoutineItems();
   var checked = loadRoutineCheckin();
   var today   = new Date().toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'long' });
