@@ -5917,12 +5917,10 @@ function loadWellbeingTools() {
 function saveWellbeingTools(tools) { setData(WT_KEY, tools); scheduleSave(); }
 
 function renderWtGrid() {
-  try {
   var tools = loadWellbeingTools();
   var grid  = document.getElementById('wt-grid');
   var count = document.getElementById('wt-count');
-  if (!grid) { console.error('renderWtGrid: wt-grid not found'); return; }
-  console.log('renderWtGrid: tools=', tools ? tools.length : 'null', 'grid=', !!grid);
+  if (!grid) return;
   if (count) count.textContent = tools.length + ' item' + (tools.length !== 1 ? 's' : '');
   grid.innerHTML = '';
 
@@ -5949,7 +5947,6 @@ function renderWtGrid() {
     card.addEventListener('click', function() { openWtEdit(i); });
     grid.appendChild(card);
   });
-  } catch(e) { console.error('renderWtGrid ERROR:', e); }
 }
 
 var wtEditIndex = -1;
@@ -6042,7 +6039,6 @@ function saveRoutineCheckin(state) {
   allDays[getTodayKey()] = state;
   setData(ROUTINE_CHECKIN_KEY, allDays);
   scheduleSave();
-  } catch(e) { console.error('renderRoutinesChecklist ERROR:', e); }
 }
 
 function toggleRoutineCheckin(itemId) {
@@ -6068,10 +6064,8 @@ function routinesTab(which) {
 }
 
 function renderRoutinesChecklist() {
-  try {
   var grid    = document.getElementById('routines-checkin-grid');
-  if (!grid) { console.error('renderRoutinesChecklist: grid not found'); return; }
-  console.log('renderRoutinesChecklist: starting');
+  if (!grid) return;
   var items   = loadRoutineItems();
   var checked = loadRoutineCheckin();
   var today   = new Date().toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'long' });
