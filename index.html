@@ -591,20 +591,20 @@
 
   <div class="nav-section">
     <div class="nav-label">Wellbeing</div>
-    <button class="nav-item" onclick="goTo('whoop', this)">
-      <span class="nav-icon">🫀</span> Whoop Guide
-    </button>
     <button class="nav-item" onclick="goTo('routines', this)">
-      <span class="nav-icon">🌅</span> AM / PM Routines
-    </button>
-    <button class="nav-item" onclick="goTo('longevity', this)">
-      <span class="nav-icon">🌿</span> Longevity
+      <span class="nav-icon">🌅</span> Daily Rituals
     </button>
     <button class="nav-item" onclick="goTo('supplements', this)">
       <span class="nav-icon">💊</span> Supplements
     </button>
     <button class="nav-item" onclick="goTo('wellbeing-tools', this)">
       <span class="nav-icon">🔴</span> Wellbeing Tools
+    </button>
+    <button class="nav-item" onclick="goTo('whoop', this)">
+      <span class="nav-icon">🫀</span> Whoop Guide
+    </button>
+    <button class="nav-item" onclick="goTo('longevity', this)">
+      <span class="nav-icon">🌿</span> Longevity
     </button>
   </div>
 
@@ -2173,7 +2173,7 @@ function showCuisine(id, el) {
       <!-- MORNING -->
       <div>
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
-          <div style="font-size:22px;">&#x1F305;</div>
+          <div style="font-size:22px;">🌅</div>
           <div>
             <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;">Morning routine</div>
             <div style="font-size:12px;color:var(--text3);">~12 minutes &middot; Before breakfast</div>
@@ -2226,7 +2226,7 @@ function showCuisine(id, el) {
       <!-- EVENING -->
       <div>
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
-          <div style="font-size:22px;">&#x1F319;</div>
+          <div style="font-size:22px;">🌙</div>
           <div>
             <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;">Evening routine</div>
             <div style="font-size:12px;color:var(--text3);">~15 minutes &middot; 60&ndash;90 min before bed</div>
@@ -2291,7 +2291,7 @@ function showCuisine(id, el) {
     <div class="card">
       <div class="card-title" style="margin-bottom:6px;">Routine tweaks by day</div>
       <div style="font-size:13px;color:var(--text2);margin-bottom:16px;">Based on your current weekly plan &mdash; AM prep and PM recovery tips tailored to each workout.</div>
-      <div class="ampm-routines-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;"></div>
+      <div id="routines-tweaks-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;"></div>
     </div>
   </div>
 </div>
@@ -3927,7 +3927,8 @@ function renderDashboardWeek() {
 
 function renderRoutinesGrid() {
   const routine = loadWorkoutRoutine();
-  const routineGrid = document.querySelector('.ampm-routines-grid');
+  // Use a specific ID so we never accidentally overwrite the By Day tweaks grid
+  const routineGrid = document.getElementById('routines-tweaks-grid');
   if (!routineGrid) return;
 
   // Build map of dayKey to routine day
@@ -3960,13 +3961,15 @@ function renderRoutinesGrid() {
       });
 
       const color = firstWorkout?.color || 'teal';
-      // Get AM/PM text - this is stored in day.ampmText or we show generic versions
-      const ampmText = day.ampmText || `AM: prep for ${combinedName.toLowerCase()}<br>PM: recovery & stretching`;
+      const tips = (typeof getWorkoutTips === 'function')
+        ? getWorkoutTips(workoutTypes)
+        : { am: 'Mobility prep', pm: 'Recovery stretch' };
+      const ampmText = `<strong style="font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:var(--text3);">AM</strong><br>${tips.am}<br><br><strong style="font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:var(--text3);">PM</strong><br>${tips.pm}`;
       html += `
         <div style="background:var(--${color}-light);border-radius:var(--radius-sm);padding:10px 8px;text-align:center;">
           <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--${color});font-family:'DM Mono',monospace;margin-bottom:4px;">${dayLabels[dayKey]}</div>
           <div style="font-size:12px;font-weight:600;color:var(--${color});margin-bottom:5px;">${combinedName}</div>
-          <div style="font-size:11px;color:var(--text2);line-height:1.5;">${ampmText}</div>
+          <div style="font-size:10.5px;color:var(--text2);line-height:1.5;text-align:left;">${ampmText}</div>
         </div>
       `;
     }
@@ -5935,9 +5938,9 @@ function renderWtGrid() {
         '</div>' +
         '<span style="font-size:11px;font-weight:600;padding:3px 10px;border-radius:999px;background:' + cm.bg + ';color:' + cm.text + ';margin-left:8px;flex-shrink:0;">' + meta.label + '</span>' +
       '</div>' +
-      '<div style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;color:var(--text3);font-family:\'DM Mono\',monospace;margin-bottom:5px;">&#x23F0; ' + (t.when || '') + '</div>' +
+      '<div style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;color:var(--text3);font-family:\'DM Mono\',monospace;margin-bottom:5px;">⏰ ' + (t.when || '') + '</div>' +
       '<div style="font-size:13px;color:var(--text2);line-height:1.6;">' + (t.benefits || '') + '</div>' +
-      '<div style="margin-top:12px;font-size:12px;color:var(--teal);font-weight:500;">&#x270F;&#xFE0F; Tap card to edit</div>';
+      '<div style="margin-top:12px;font-size:12px;color:var(--teal);font-weight:500;">✏️ Tap card to edit</div>';
 
     card.addEventListener('mouseenter', function() { card.style.boxShadow = 'var(--shadow-lg)'; card.style.borderColor = 'var(--teal)'; });
     card.addEventListener('mouseleave', function() { card.style.boxShadow = 'var(--shadow)'; card.style.borderColor = 'var(--border)'; });
@@ -6080,7 +6083,7 @@ function renderRoutinesChecklist() {
     '</div>' +
     '<div style="text-align:right;">' +
       '<div style="font-size:36px;font-weight:700;font-family:\'DM Mono\',monospace;color:var(--teal);">' + done + '/' + total + '</div>' +
-      '<div style="font-size:12px;color:var(--text3);">' + (done === total ? '&#x1F389; All done!' : 'completed') + '</div>' +
+      '<div style="font-size:12px;color:var(--text3);">' + (done === total ? '🎉 All done!' : 'completed') + '</div>' +
     '</div>';
   grid.appendChild(summary);
 
@@ -6107,7 +6110,7 @@ function renderRoutinesChecklist() {
           '<div style="font-size:15px;font-weight:600;">' + label + '</div>' +
         '</div>' +
         '<div style="font-size:13px;color:' + (doneCount === blockItems.length ? 'var(--teal)' : 'var(--text3)') + ';">' +
-          (doneCount === blockItems.length ? '&#x2713; Done' : doneCount + '/' + blockItems.length) +
+          (doneCount === blockItems.length ? '✓ Done' : doneCount + '/' + blockItems.length) +
         '</div>' +
       '</div>';
 
@@ -6161,8 +6164,8 @@ function renderRoutinesChecklist() {
     grid.appendChild(block);
   }
 
-  renderBlock('Morning', '&#x1F305;', amItems);
-  renderBlock('Evening', '&#x1F319;', pmItems);
+  renderBlock('Morning', '🌅', amItems);
+  renderBlock('Evening', '🌙', pmItems);
 
   // Reset button
   var resetWrap = document.createElement('div');
@@ -6273,13 +6276,13 @@ function getWorkoutTips(workoutTypes) {
     }
   });
   return {
-    am: amParts.join(' &bull; '),
-    pm: pmParts.join(' &bull; ')
+    am: amParts.join(' • '),
+    pm: pmParts.join(' • ')
   };
 }
 
 function renderRoutinesTweaks() {
-  var grid = document.querySelector('#routines-view-tweaks .ampm-routines-grid');
+  var grid = document.getElementById('routines-tweaks-grid');
   if (!grid) return;
   var routine = loadWorkoutRoutine();
   var lib = getWorkoutLibrary();
