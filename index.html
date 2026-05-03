@@ -21,7 +21,7 @@
   .sync-sub  { font-size:13px;color:var(--text3);margin-bottom:28px; }
   .sync-btn  {
     display:inline-flex;align-items:center;gap:10px;padding:13px 24px;
-    background:var(--text);color:#fff;border:none;border-radius:999px;
+    background:#00f5d4;color:#00382f;border:none;border-radius:999px;
     font-family:'Manrope', sans-serif;font-size:14px;font-weight:600;cursor:pointer;
     transition:opacity 0.15s;margin-bottom:14px;width:100%;justify-content:center;
   }
@@ -32,7 +32,7 @@
     font-family:'Manrope', sans-serif;font-size:13px;font-weight:500;cursor:pointer;
     transition:border-color 0.15s;width:100%;justify-content:center;
   }
-  .sync-btn-secondary:hover { border-color:var(--text); color:var(--text); }
+  .sync-btn-secondary:hover { border-color:#00f5d4; color:#00f5d4; }
   .sync-setup { background:var(--bg2);border-radius:12px;padding:18px;text-align:left;margin-top:16px; }
   .sync-setup-title { font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);font-family:'Manrope', sans-serif;margin-bottom:10px; }
   .sync-step { font-size:12.5px;color:var(--text2);padding:5px 0;display:flex;gap:10px;border-bottom:1px solid var(--border);line-height:1.5; }
@@ -113,7 +113,7 @@
   .sidebar {
     width: 240px;
     flex-shrink: 0;
-    background: var(--text);
+    background: #0e0e0e;
     display: flex;
     flex-direction: column;
     padding: 0;
@@ -148,7 +148,7 @@
     border: none; background: none; width: 100%; text-align: left;
   }
   .nav-item:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.85); }
-  .nav-item.active { background: rgba(255,255,255,0.12); color: #fff; font-weight: 500; }
+  .nav-item.active { background: rgba(0,245,212,0.15); color: #00f5d4; font-weight: 500; }
   .nav-icon { font-size: 16px; width: 20px; text-align: center; }
 
   .sidebar-footer {
@@ -157,7 +157,7 @@
   }
   .stat-mini { display: flex; justify-content: space-between; margin-bottom: 8px; }
   .stat-mini-item { text-align: center; }
-  .stat-mini-val { font-size: 15px; font-weight: 600; color: #fff; }
+  .stat-mini-val { font-size: 15px; font-weight: 600; color: #e5e2e1; }
   .stat-mini-label { font-size: 10px; color: rgba(255,255,255,0.3); margin-top: 1px; }
 
   /* ---- MAIN ---- */
@@ -247,7 +247,7 @@
   .eating-tabs { display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
   .etab { padding: 7px 16px; border-radius: 999px; font-size: 13px; font-weight: 500; cursor: pointer; border: 1.5px solid var(--border); background: var(--card); color: var(--text2); transition: all 0.15s; }
   .etab:hover { border-color: var(--text); color: var(--text); }
-  .etab.active { background: var(--text); color: #fff; border-color: var(--text); }
+  .etab.active { background: #00f5d4; color: #00382f; border-color: #00f5d4; }
   .etab-page { display: none; }
   .etab-page.active { display: block; }
 
@@ -354,7 +354,7 @@
     position: fixed;
     top: 14px; left: 14px;
     z-index: 200;
-    background: var(--text);
+    background: #0e0e0e;
     border: none;
     border-radius: 10px;
     width: 42px; height: 42px;
@@ -1711,7 +1711,7 @@
     <style>
       .ctab { padding:7px 14px;border-radius:999px;border:1.5px solid var(--border);background:var(--bg);color:var(--text2);font-family:'Manrope', sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all 0.15s; }
       .ctab:hover { border-color:var(--text);color:var(--text); }
-      .ctab.active { background:var(--text);color:#fff;border-color:var(--text); }
+      .ctab.active { background:#00f5d4;color:#00382f;border-color:#00f5d4; }
       .cuisine-panel { display:none; }
       .cuisine-panel.active { display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px; }
       .cp-col-title { font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;font-family:'Manrope', sans-serif;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border); }
@@ -2212,7 +2212,7 @@ function showCuisine(id, el) {
 
   <!-- Tab bar -->
   <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;">
-    <button id="routines-tab-overview" onclick="routinesTab('overview')" style="padding:8px 20px;border-radius:999px;border:1.5px solid var(--text);background:var(--text);color:#fff;font-family:'Manrope', sans-serif;font-size:13px;font-weight:500;cursor:pointer;">Overview</button>
+    <button id="routines-tab-overview" onclick="routinesTab('overview')" style="padding:8px 20px;border-radius:999px;border:1.5px solid var(--text);background:#00f5d4;color:#00382f;font-family:'Manrope', sans-serif;font-size:13px;font-weight:500;cursor:pointer;">Overview</button>
     <button id="routines-tab-checklist" onclick="routinesTab('checklist')" style="padding:8px 20px;border-radius:999px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-family:'Manrope', sans-serif;font-size:13px;font-weight:500;cursor:pointer;">&#x2705; Today</button>
     <button id="routines-tab-tweaks" onclick="routinesTab('tweaks')" style="padding:8px 20px;border-radius:999px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-family:'Manrope', sans-serif;font-size:13px;font-weight:500;cursor:pointer;">&#x1F4C5; By Day</button>
   </div>
@@ -2577,7 +2577,7 @@ function showCuisine(id, el) {
 
   <!-- View toggle -->
   <div id="supp-tabs" style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;">
-    <button id="supp-tab-stack" onclick="suppTab('stack')" style="padding:8px 20px;border-radius:999px;border:1.5px solid var(--text);background:var(--text);color:#fff;font-family:'Manrope', sans-serif;font-size:13px;font-weight:500;cursor:pointer;">My Stack</button>
+    <button id="supp-tab-stack" onclick="suppTab('stack')" style="padding:8px 20px;border-radius:999px;border:1.5px solid var(--text);background:#00f5d4;color:#00382f;font-family:'Manrope', sans-serif;font-size:13px;font-weight:500;cursor:pointer;">My Stack</button>
     <button id="supp-tab-schedule" onclick="suppTab('schedule')" style="padding:8px 20px;border-radius:999px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-family:'Manrope', sans-serif;font-size:13px;font-weight:500;cursor:pointer;">Daily Routine</button>
     <button id="supp-tab-checkin" onclick="suppTab('checkin')" style="padding:8px 20px;border-radius:999px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-family:'Manrope', sans-serif;font-size:13px;font-weight:500;cursor:pointer;">✅ Today</button>
   </div>
